@@ -12,26 +12,20 @@ import ygraph.ai.smartfox.games.GameMessage;
 import ygraph.ai.smartfox.games.GamePlayer;
 import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
 
-/**
- * An example illustrating how to implement a GamePlayer
- * 
- * @author Yong Gao (yong.gao@ubc.ca) Jan 5, 2021
- *
- */
+// An example illustrating how to implement a GamePlayer
+// @author Yong Gao (yong.gao@ubc.ca) Jan 5, 2021
+
 public class COSC322Test extends GamePlayer {
 
 	private GameClient gameClient = null;
 	private BaseGameGUI gamegui = null;
-	private ArrayList<Integer> gameState = null;
+	private ArrayList<Integer> gameState = null; // Stores game state locally
 
 	private String userName = null;
 	private String passwd = null;
 
-	/**
-	 * The main method
-	 * 
-	 * @param args for name and passwd (current, any string would work)
-	 */
+	// The main method
+	// @param args for name and passwd (current, any string would work)
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 
@@ -47,12 +41,9 @@ public class COSC322Test extends GamePlayer {
 		}
 	}
 
-	/**
-	 * Any name and passwd
-	 * 
-	 * @param userName
-	 * @param passwd
-	 */
+	// Any name and passwd
+	// @param userName
+	// @param passwd
 	public COSC322Test(String userName, String passwd) {
 		this.userName = userName;
 		this.passwd = passwd;
@@ -63,11 +54,12 @@ public class COSC322Test extends GamePlayer {
 	public void onLogin() {
 		System.out.println(
 				"Congratualations!!! " + "I am called because the server indicated that the login is successfully");
-		
-		List<Room> rooms = this.gameClient.getRoomList(); 
-    	for(Room room : rooms) {
-    		System.out.println(room.toString());
-    	}
+
+		List<Room> rooms = this.gameClient.getRoomList();
+		for (Room room : rooms) {
+			System.out.println(room.toString());
+		}
+		System.out.println();
 
 		userName = gameClient.getUserName();
 		if (gamegui != null) {
@@ -84,6 +76,7 @@ public class COSC322Test extends GamePlayer {
 		String playerBlack, playerWhite;
 		gameState = this.gameState;
 
+		// Catches failure to handle message and returns false with error printed to console
 		try {
 			// Handle console output based on message type
 			switch (messageType) {
@@ -99,7 +92,8 @@ public class COSC322Test extends GamePlayer {
 				break;
 
 			case GameMessage.GAME_ACTION_START:
-				// gameState = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.GAME_STATE);
+				// gameState = (ArrayList<Integer>)
+				// msgDetails.get(AmazonsGameMessage.GAME_STATE);
 				playerBlack = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				playerWhite = (String) msgDetails.get(AmazonsGameMessage.PLAYER_WHITE);
 
@@ -132,9 +126,9 @@ public class COSC322Test extends GamePlayer {
 				break;
 			}
 		} catch (Exception e) {
+			System.err.println(e.toString());
 			System.err.println("\nERROR: Message Handling Failed\nmessageType: " + messageType + "\nmsgDetails: "
 					+ msgDetails.toString());
-			System.err.println(e.toString());
 			return false;
 		}
 
