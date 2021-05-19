@@ -1,0 +1,22 @@
+<factorypath>
+    <factorypathentry kind="VARJAR" id="M2_REPO/ubc-yong-gao/ygraph-ai-smartfox-client/2.1/ygraph-ai-smartfox-client-2.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/ubc-yong-gao/ygraph/1.0/ygraph-1.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/gephi/graph-api/0.9.1/graph-api-0.9.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/gephi/project-api/0.9.1/project-api-0.9.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/netbeans/api/org-openide-filesystems/RELEASE81/org-openide-filesystems-RELEASE81.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/netbeans/api/org-openide-util/RELEASE81/org-openide-util-RELEASE81.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/gephi/utils-longtask/0.9.1/utils-longtask-0.9.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/gephi/graphstore/0.5.3/graphstore-0.5.3.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/it/unimi/dsi/fastutil/6.6.4/fastutil-6.6.4.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/colt/colt/1.2.0/colt-1.2.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/concurrent/concurrent/1.3.4/concurrent-1.3.4.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/joda-time/joda-time/2.8.2/joda-time-2.8.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/netbeans/api/org-openide-util-lookup/RELEASE81/org-openide-util-lookup-RELEASE81.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/smartfox/client-libs/SFS2X_API_Java/1.6/SFS2X_API_Java-1.6.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/smartfox/client-libs/sfs2x-client-core/1.6/sfs2x-client-core-1.6.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/smartfox/client-libs/netty/3.2.2/netty-3.2.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/smartfox/client-libs/slf4j-api/1.6.1/slf4j-api-1.6.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/smartfox/client-libs/slf4j-simple/1.6.1/slf4j-simple-1.6.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/smartfox/client-libs/jdom/1.0/jdom-1.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/smartfox/client-libs/commons-lang/2.4/commons-lang-2.4.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>
