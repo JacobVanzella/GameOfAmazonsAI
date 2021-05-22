@@ -1,4 +1,4 @@
-package amazonsChess;
+package amazonsChessRecursive;
 
 import java.util.List;
 

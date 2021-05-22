@@ -1,4 +1,4 @@
-package amazonsChess;
+package amazonsChessRecursive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,34 +76,49 @@ public class RecursiveAI extends Board{
 		return bestThrow;
 	}
 	
-	protected int scoreMove(List<Integer> move, int player) {
-		RecursiveAI testBoard = new RecursiveAI(this); // create copy of board
-		testBoard.moveQueen(move.get(0), move.get(1), move.get(2), move.get(3), player);
+	
+	public List<Integer> scoreMoves( RecursiveAI currBoard, int player) {
+		Node root = new Node(null, 0, currBoard, 0);
+		List<Node> nodeIn = new ArrayList<Node>();
+		nodeIn.add(root);
+		List<Node> nodeTree = getTree(root, player, nodeIn);
+		System.out.println(nodeTree);
 		
+		
+		
+		return null;
+	}
+	public List<Node> getTree(Node parent, int player, List<Node> tree){
+		List<List<Integer>> children = getMoves(parent.getBoard(), player);
+		RecursiveAI parentBoard = parent.getBoard(); 
+		List<Node> childrenNodes = new ArrayList<Node>();
+		for( List<Integer> move : children){
+			RecursiveAI moveBoard = new RecursiveAI(this);
+			moveBoard.moveQueen(move.get(0), move.get(1), move.get(2), move.get(3), player);
+			int score = parentBoard.getMoveScore(move, player);
+			Node child = new Node(parent, score, moveBoard, parent.getCounter() +1 );
+			childrenNodes.add(child);
+		}
+		//System.out.println(childrenNodes);
+		parent.setChildren(childrenNodes);
+		tree.addAll(tree);
+		if( parent.getCounter() == 3) {
+			return tree;
+		}else {
+			for( Node child : childrenNodes) {
+				getTree(child, player, tree);
+			}
+		}
+		return null;
+	}
+	protected int getMoveScore(List<Integer> move, int player) {
+		RecursiveAI testBoard = new RecursiveAI(this);
+		testBoard.moveQueen(move.get(0), move.get(1), move.get(2), move.get(3), player);
 		int opponent = (player == 1) ? 2 : 1;
 		int playerMoves = getMoves(testBoard, player).size();
 		int opponentMoves = getMoves(testBoard, opponent).size();
 		int score = playerMoves - opponentMoves;
-		
-		// Else Recurse
-		//int scores[] = testBoard.scoreMoves(testBoard, (player == 1) ? 2 : 1 );
-		// Implement
-		
 		return score;
-	}
-	
-	public List<Integer> scoreMoves( RecursiveAI currBoard, int player) {
-		List<List<Integer>> moves = currBoard.getMoves(currBoard, player);
-		int bestMoveScore = -99999999;
-		List<Integer> bestMove = new ArrayList<Integer>();
-		for( List<Integer> move : moves) {
-			int moveScore = currBoard.scoreMove(move, player);
-			if( moveScore > bestMoveScore) {
-				bestMove = move;
-				bestMoveScore = moveScore;
-			}
-		}
-		return bestMove;
 	}
 	protected List<List<Integer>> getMoves(RecursiveAI currBoard, int player) {
 		
