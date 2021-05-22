@@ -7,14 +7,54 @@ public class RecursiveAI extends Board {
 
 	RecursiveAI parent = null;
 
-	RecursiveAI() {
+	public RecursiveAI() {
 		super(); // calls Board() to create a board for the AI
 	}
+	
+	public RecursiveAI(int[][] board) {
+		super();
+		this.board = board;
+	}
 
-	RecursiveAI(RecursiveAI parent) {
+	public RecursiveAI(RecursiveAI parent) {
 		super(parent);
 		this.parent = parent;
 	}
+	
+	
+	////////////////////////////////////////////////////////////
+	// Start
+	// fetchPlays seems good to have as a public class, but getPlays feels
+	// redundant, is there a way we can use the existing functions to achieve
+	// the same result??
+	public List<List<Integer>> fetchPlays( RecursiveAI currBoard, int player){
+		List<List<Integer>> moves = currBoard.getMoves(currBoard, player);
+		List<List<Integer>> plays = currBoard.getPlays(currBoard, moves, player);
+		
+		return plays;
+	}
+	
+	protected List<List<Integer>> getPlays(RecursiveAI currBoard, List<List<Integer>> moves, int player){
+		List<List<Integer>> plays = new ArrayList<List<Integer>>();
+		for( List<Integer> move : moves) {
+			RecursiveAI testboard = currBoard;
+			testboard.moveQueen(move.get(0), move.get(1), move.get(2), move.get(3), player);
+			List<List<Integer>> spearThrow = testboard.getSpearMoves(move.get(2), move.get(3), testboard, player);
+			for( List<Integer> throwN : spearThrow) {
+				List<Integer> play = new ArrayList<Integer>();
+				play.add(move.get(0));
+				play.add(move.get(1));
+				play.add(move.get(2));
+				play.add(move.get(3));
+				play.add(throwN.get(2));
+				play.add(throwN.get(3));
+				plays.add(play);
+			}
+		}
+		return plays;
+	}
+	// End
+	////////////////////////////////////////////////////////////
 
 	protected void makeBestPlay(RecursiveAI ai, int player) {
 		List<Integer> bestPlay = getPlay(ai, player);
