@@ -116,7 +116,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		boolean whiteCanMove = false;
 		for (List<Integer> queen : whiteQueens) {
 			int whiteQueenRow = queen.get(0);
@@ -133,7 +133,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		if (blackCanMove == false) {
 			hasWinner = 1;
 		} else if (whiteCanMove == false) {
@@ -141,7 +141,7 @@ public class Board {
 		}
 		return hasWinner;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

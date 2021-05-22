@@ -3,6 +3,13 @@ package amazonsChess;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO Consider creating a Move class to simplify code
+// Constructors
+// public class Move(){}
+// public class Move(row, col){}
+// public class Move(queenCurrRow, queenCurrCol, queenNextRow, queenNextCol)
+// public class Move(queenCurrRow, queenCurrCol, queenNextRow, queenNextCol, spearRow, spearCol){}
+
 public class RecursiveAI extends Board {
 
 	RecursiveAI parent = null;
@@ -10,7 +17,7 @@ public class RecursiveAI extends Board {
 	public RecursiveAI() {
 		super(); // calls Board() to create a board for the AI
 	}
-	
+
 	public RecursiveAI(int[][] board) {
 		super();
 		this.board = board;
@@ -20,27 +27,26 @@ public class RecursiveAI extends Board {
 		super(parent);
 		this.parent = parent;
 	}
-	
-	
+
 	////////////////////////////////////////////////////////////
-	// Start
+	// Start TODO
 	// fetchPlays seems good to have as a public class, but getPlays feels
 	// redundant, is there a way we can use the existing functions to achieve
 	// the same result??
-	public List<List<Integer>> fetchPlays( RecursiveAI currBoard, int player){
+	public List<List<Integer>> fetchPlays(RecursiveAI currBoard, int player) {
 		List<List<Integer>> moves = currBoard.getMoves(currBoard, player);
 		List<List<Integer>> plays = currBoard.getPlays(currBoard, moves, player);
-		
+
 		return plays;
 	}
-	
-	protected List<List<Integer>> getPlays(RecursiveAI currBoard, List<List<Integer>> moves, int player){
+
+	protected List<List<Integer>> getPlays(RecursiveAI currBoard, List<List<Integer>> moves, int player) {
 		List<List<Integer>> plays = new ArrayList<List<Integer>>();
-		for( List<Integer> move : moves) {
+		for (List<Integer> move : moves) {
 			RecursiveAI testboard = currBoard;
 			testboard.moveQueen(move.get(0), move.get(1), move.get(2), move.get(3), player);
 			List<List<Integer>> spearThrow = testboard.getSpearMoves(move.get(2), move.get(3), testboard, player);
-			for( List<Integer> throwN : spearThrow) {
+			for (List<Integer> throwN : spearThrow) {
 				List<Integer> play = new ArrayList<Integer>();
 				play.add(move.get(0));
 				play.add(move.get(1));
@@ -59,14 +65,8 @@ public class RecursiveAI extends Board {
 	protected void makeBestPlay(RecursiveAI ai, int player) {
 		List<Integer> bestPlay = getPlay(ai, player);
 		if (bestPlay != null) {
-			int prevRow = bestPlay.get(0);
-			int prevCol = bestPlay.get(1);
-			int bestRow = bestPlay.get(2);
-			int bestCol = bestPlay.get(3);
-			int spearRow = bestPlay.get(4);
-			int spearCol = bestPlay.get(5);
-			ai.moveQueen(prevRow, prevCol, bestRow, bestCol, player);
-			ai.throwSpear(spearRow, spearCol);
+			ai.moveQueen(bestPlay.get(0), bestPlay.get(1), bestPlay.get(2), bestPlay.get(3), player);
+			ai.throwSpear(bestPlay.get(4), bestPlay.get(5));
 		}
 	}
 
@@ -91,7 +91,7 @@ public class RecursiveAI extends Board {
 		int bestCol = -1;
 		int row = -1;
 		int col = -1;
-		
+
 		for (List<Integer> move : moves) {
 			row = move.get(2);
 			col = move.get(3);
@@ -101,19 +101,19 @@ public class RecursiveAI extends Board {
 			int playerMoves = getMoves(trialBoard, player).size();
 			int opponentMoves = getMoves(trialBoard, opponent).size();
 			int score = playerMoves - opponentMoves;
-			
+
 			if (score > bestThrowScore) {
 				bestThrowScore = score;
 				bestRow = row;
 				bestCol = col;
 			}
 		}
-		
+
 		if (bestThrowScore == Integer.MIN_VALUE) {
 			bestRow = bestMove.get(0);
 			bestCol = bestMove.get(1);
 		}
-		
+
 		List<Integer> bestThrow = new ArrayList<Integer>();
 		bestThrow.add(bestRow);
 		bestThrow.add(bestCol);
@@ -129,6 +129,7 @@ public class RecursiveAI extends Board {
 		int opponentMoves = getMoves(testBoard, opponent).size();
 		int score = playerMoves - opponentMoves;
 
+		// TODO
 		// Else Recurse
 		// int scores[] = testBoard.scoreMoves(testBoard, (player == 1) ? 2 : 1 );
 		// Implement
@@ -183,7 +184,7 @@ public class RecursiveAI extends Board {
 						while (canMove) {
 							nextRow = currRow + i * dist;
 							nextCol = currCol + j * dist;
-							
+
 							if (currBoard.getTile(nextRow, nextCol) == EMPTY) {
 								ArrayList<Integer> move = new ArrayList<Integer>();
 								move.add(currRow);
@@ -214,7 +215,7 @@ public class RecursiveAI extends Board {
 		// Find possible moves for each queen
 		boolean canMove = true;
 		int nextRow = currRow, nextCol = currCol, dist = 0;
-		
+
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				canMove = true;
@@ -223,7 +224,7 @@ public class RecursiveAI extends Board {
 					while (canMove) {
 						nextRow = currRow + i * dist;
 						nextCol = currCol + j * dist;
-						
+
 						if (currBoard.getTile(nextRow, nextCol) == EMPTY) {
 							ArrayList<Integer> move = new ArrayList<Integer>();
 							move.add(currRow);
