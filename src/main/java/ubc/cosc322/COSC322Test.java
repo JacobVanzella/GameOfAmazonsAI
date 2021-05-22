@@ -3,9 +3,7 @@ package ubc.cosc322;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
-import amazonsChess.AmazonsChess;
 import amazonsChess.RecursiveAI;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
@@ -26,7 +24,6 @@ public class COSC322Test extends GamePlayer {
 	private String userName = null;
 	private String passwd = null;
 	private int player = 0;
-	private int opponent = 0;
 
 	// The main method
 	// @param args for name and passwd (current, any string would work)
@@ -150,14 +147,9 @@ public class COSC322Test extends GamePlayer {
 				// msgDetails.get(AmazonsGameMessage.GAME_STATE);
 				playerBlack = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				playerWhite = (String) msgDetails.get(AmazonsGameMessage.PLAYER_WHITE);
+				player = (playerBlack.equals(AmazonsGameMessage.PLAYER_BLACK)) ? 1 : 2;
 				gameState = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.GAME_STATE);
-				if (playerBlack == userName) {
-					player = 1;
-					opponent = 2;
-				} else {
-					player = 2;
-					opponent = 1;
-				}
+				
 				System.out.println("\nGame Started!!\n" + playerBlack + "(B) vs. " + playerWhite + "(W)");
 				System.out.print("Board State: ");
 				for (int i = 11; i < gameState.size(); i++) {
