@@ -115,127 +115,38 @@ public class Board {
 
 		boolean blackCanMove = false;
 		for (List<Integer> blackQueen : blackQ) {
-			int row = blackQueen.get(0);
-			int col = blackQueen.get(1);
-			if (row != 0 && col != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row - 1, col + 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																	// move (empty)
-					blackCanMove = true;
-				}
-			}
-			if (row != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row - 1, col) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					blackCanMove = true;
-				}
-			}
+			int blackQueenRow = blackQueen.get(0);
+			int blackQueenCol = blackQueen.get(1);
 
-			if (row != 0 && col != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row - 1, col - 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																	// move (empty)
-					blackCanMove = true;
-				}
-			}
-			if (col != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row, col - 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					blackCanMove = true;
-				}
-			}
-			if (row != 9 && col != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row + 1, col - 1) == EMPTY) {
-					blackCanMove = true;
-				}
-			}
-			if (row != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row + 1, col) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					blackCanMove = true;
-				}
-			}
-			if (row != 9 && col != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row + 1, col + 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																	// move (empty)
-					blackCanMove = true;
-				}
-			}
-			if (col != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row, col + 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					blackCanMove = true;
+			for (int i = -1; i < 2; i++) {
+				for (int j = -1; j < 2; j++) {
+					try {
+						if (currBoard.getTile(blackQueenRow + i, blackQueenCol + j) == EMPTY)
+							blackCanMove = true;
+					} catch (Exception e) {
+						continue; // If out of bounds continue to next loop
+					}
 				}
 			}
 		}
-
-//		for (List<Integer> blackQueen : blackQ) {
-//			boolean canMove = false;
-//			int blackQueenRow = blackQueen.get(0);
-//			int blackQueenCol = blackQueen.get(1);
-//			
-//			for (int row = 0; row < 3; row++) {
-//				for (int col = 0; col < 3; col++) {
-//					try {
-//						
-//					} catch (Exception e) {
-//						
-//					}
-//				}
-//			}
-//		}
-
+		
 		boolean whiteCanMove = false;
 		for (List<Integer> whiteQueen : whiteQ) {
-			int row = whiteQueen.get(0);
-			int col = whiteQueen.get(1);
-			if (row != 0 && col != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row - 1, col + 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																	// move (empty)
-					whiteCanMove = true;
-				}
-			}
-			if (row != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row - 1, col) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					whiteCanMove = true;
-				}
-			}
+			int whiteQueenRow = whiteQueen.get(0);
+			int whiteQueenCol = whiteQueen.get(1);
 
-			if (row != 0 && col != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row - 1, col - 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																	// move (empty)
-					whiteCanMove = true;
-				}
-			}
-			if (col != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row, col - 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					whiteCanMove = true;
-				}
-			}
-			if (row != 9 && col != 0) { // checks if out of board bounds
-				if (currBoard.getTile(row + 1, col - 1) == EMPTY) {
-					whiteCanMove = true;
-				}
-			}
-			if (row != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row + 1, col) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					whiteCanMove = true;
-				}
-			}
-			if (row != 9 && col != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row + 1, col + 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																	// move (empty)
-					whiteCanMove = true;
-				}
-			}
-			if (col != 9) { // checks if out of board bounds
-				if (currBoard.getTile(row, col + 1) == EMPTY) { // if in bounds checks up right tile to check if can
-																// move (empty)
-					whiteCanMove = true;
+			for (int i = -1; i < 2; i++) {
+				for (int j = -1; j < 2; j++) {
+					try {
+						if (currBoard.getTile(whiteQueenRow + i, whiteQueenCol + j) == EMPTY)
+							whiteCanMove = true;
+					} catch (Exception e) {
+						continue; // If out of bounds continue to next loop
+					}
 				}
 			}
 		}
+		
 		if (blackCanMove == false) {
 			hasWinner = 1;
 		} else if (whiteCanMove == false) {
