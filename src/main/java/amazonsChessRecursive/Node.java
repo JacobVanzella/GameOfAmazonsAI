@@ -2,7 +2,7 @@ package amazonsChessRecursive;
 
 import java.util.ArrayList;
 import java.util.List;
- 
+
 public class Node {
  
     public Node parentNode; // The parent of the current node

@@ -52,8 +52,7 @@ public class COSC322Test extends GamePlayer {
 
 	@Override
 	public void onLogin() {
-		System.out.println(
-				"Congratualations!!! " + "I am called because the server indicated that the login is successfully");
+		System.out.println("Congratualations!!! The server has indicated that you successfully logged in.\n");
 
 		List<Room> rooms = this.gameClient.getRoomList();
 		for (Room room : rooms) {
@@ -76,7 +75,8 @@ public class COSC322Test extends GamePlayer {
 		String playerBlack, playerWhite;
 		gameState = this.gameState;
 
-		// Catches failure to handle message and returns false with error printed to console
+		// Catches failure to handle message and returns false with error printed to
+		// console
 		try {
 			// Handle console output based on message type
 			switch (messageType) {
