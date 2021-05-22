@@ -1,6 +1,7 @@
 package amazonsChessRecursive;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Tree {
 	private Node root;
@@ -15,13 +16,15 @@ public class Tree {
 		Node node = this.root;
 		int depth = 0;
 		while(node != null) {
-			if(node.getChildren().isEmpty())break;
+			List<Node> children = node.getChildren();
+			if(children.isEmpty())break;
 			else{
-				node = node.getChildren().get(0);
+				node = children.get(0);
 				depth++;
 			}
-		}
+			
 		this.depth = depth;
+	}
 	}
 	
 	public void expandFrontier() {
