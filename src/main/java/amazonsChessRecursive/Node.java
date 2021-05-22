@@ -43,6 +43,7 @@ public class Node {
  
     public static int maxNumberOfChildren; // Equal to the n-arity;
  
+
     public Node(String dataValue) {
         this.dataValue = dataValue;
         ArrayList<Node> children = new ArrayList<Node>(maxNumberOfChildren);
