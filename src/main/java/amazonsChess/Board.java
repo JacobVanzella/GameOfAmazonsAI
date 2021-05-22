@@ -79,54 +79,33 @@ public class Board {
 	// Return 1 on white win, 2 on black win, else return 0
 	public int hasWinner() {
 		int hasWinner = 0;
-
-		Board currBoard = new Board();
-		List<List<Integer>> blackQueens = new ArrayList<List<Integer>>();
-		List<List<Integer>> whiteQueens = new ArrayList<List<Integer>>();
-
-		for (int row = 0; row < 10; row++) {
-			for (int col = 0; col < 10; col++) {
-				if (currBoard.getTile(row, col) == 1) {
-					ArrayList<Integer> queenN = new ArrayList<Integer>();
-					queenN.add(row);
-					queenN.add(col);
-					whiteQueens.add(queenN);
-				} else if (currBoard.getTile(row, col) == 2) {
-					ArrayList<Integer> queenN = new ArrayList<Integer>();
-					queenN.add(row);
-					queenN.add(col);
-					blackQueens.add(queenN);
-				}
-			}
-		}
-
 		boolean blackCanMove = false;
-		for (List<Integer> queen : blackQueens) {
-			int blackQueenRow = queen.get(0);
-			int blackQueenCol = queen.get(1);
+		boolean whiteCanMove = false;
+		List<List<Integer>> queens = new ArrayList<List<Integer>>();
 
-			for (int i = -1; i < 2; i++) {
-				for (int j = -1; j < 2; j++) {
-					try {
-						if (currBoard.getTile(blackQueenRow + i, blackQueenCol + j) == EMPTY)
-							blackCanMove = true;
-					} catch (Exception e) {
-						continue; // If out of bounds continue to next loop
-					}
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (board[i][j] == 1 || board[i][j] == 2) {
+					ArrayList<Integer> queenN = new ArrayList<Integer>();
+					queenN.add(i);
+					queenN.add(j);
+					queens.add(queenN);
 				}
 			}
 		}
 
-		boolean whiteCanMove = false;
-		for (List<Integer> queen : whiteQueens) {
-			int whiteQueenRow = queen.get(0);
-			int whiteQueenCol = queen.get(1);
+		for (List<Integer> queen : queens) {
+			int row = queen.get(0);
+			int col = queen.get(1);
 
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
 					try {
-						if (currBoard.getTile(whiteQueenRow + i, whiteQueenCol + j) == EMPTY)
-							whiteCanMove = true;
+						if (board[row + i][col + j] == EMPTY)
+							if (board[row][col] == 1)
+								whiteCanMove = true;
+							else
+								blackCanMove = true;
 					} catch (Exception e) {
 						continue; // If out of bounds continue to next loop
 					}
@@ -139,6 +118,7 @@ public class Board {
 		} else if (whiteCanMove == false) {
 			hasWinner = 2;
 		}
+		
 		return hasWinner;
 	}
 

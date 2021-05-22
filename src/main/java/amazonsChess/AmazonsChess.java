@@ -19,11 +19,9 @@ public class AmazonsChess {
 			List<Integer> bestPlay = white.getPlay(white, playerWhite);
 
 			if (bestPlay != null) {
-				System.out.println(bestPlay);
 				board.moveQueen(bestPlay.get(0), bestPlay.get(1), bestPlay.get(2), bestPlay.get(3), playerWhite);
 				board.throwSpear(bestPlay.get(4), bestPlay.get(5));
 			} else {
-				System.out.println("White Lost");
 				break;
 			}
 
@@ -32,15 +30,13 @@ public class AmazonsChess {
 			black.updateBoard(whiteBoard);
 
 			System.out.println(white.toString());
-			System.out.println("Black to play");
+			System.out.println("Black to play\n");
 
 			bestPlay = black.getPlay(black, playerBlack);
 			if (bestPlay != null) {
-				System.out.println(bestPlay);
 				board.moveQueen(bestPlay.get(0), bestPlay.get(1), bestPlay.get(2), bestPlay.get(3), playerBlack);
 				board.throwSpear(bestPlay.get(4), bestPlay.get(5));
 			} else {
-				System.out.println("Black lost");
 				break;
 			}
 
@@ -49,7 +45,7 @@ public class AmazonsChess {
 			white.updateBoard(blackBoard);
 
 			System.out.println(black.toString());
-			System.out.println("White to play");
+			System.out.println("White to play\n");
 		}
 
 		if (board.hasWinner() == 1) {
