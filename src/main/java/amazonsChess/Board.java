@@ -69,33 +69,20 @@ public class Board {
 	// Row column position moves
 	public void moveQueen(int prevRow, int prevCol, int nextRow, int nextCol, int player) {
 		board[prevRow][prevCol] = EMPTY;
-		board[prevRow][prevCol] = player;
+		board[nextRow][nextCol] = player;
 	}
 
 	public void throwSpear(int row, int col) {
 		board[row][col] = SPEAR;
 	}
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		for (int row = 0; row < 10; row++) {
-			for (int col = 0; col < 10; col++) {
-				sb.append(getTileSymbol(row, col));
-			}
-			if (row != 9) {
-				sb.append("\n");
-			}
-		}
-		return sb.toString();
-	}
-
-	public int hasWinner() { // if = 0 no winner, =1 white win, =2 black win
+	// Return 1 on white win, 2 on black win, else return 0
+	public int hasWinner() {
 		int hasWinner = 0;
 
 		Board currBoard = new Board();
-		List<List<Integer>> blackQ = new ArrayList<List<Integer>>();
-		List<List<Integer>> whiteQ = new ArrayList<List<Integer>>();
+		List<List<Integer>> blackQueens = new ArrayList<List<Integer>>();
+		List<List<Integer>> whiteQueens = new ArrayList<List<Integer>>();
 
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
@@ -103,20 +90,20 @@ public class Board {
 					ArrayList<Integer> queenN = new ArrayList<Integer>();
 					queenN.add(row);
 					queenN.add(col);
-					whiteQ.add(queenN);
+					whiteQueens.add(queenN);
 				} else if (currBoard.getTile(row, col) == 2) {
 					ArrayList<Integer> queenN = new ArrayList<Integer>();
 					queenN.add(row);
 					queenN.add(col);
-					blackQ.add(queenN);
+					blackQueens.add(queenN);
 				}
 			}
 		}
 
 		boolean blackCanMove = false;
-		for (List<Integer> blackQueen : blackQ) {
-			int blackQueenRow = blackQueen.get(0);
-			int blackQueenCol = blackQueen.get(1);
+		for (List<Integer> queen : blackQueens) {
+			int blackQueenRow = queen.get(0);
+			int blackQueenCol = queen.get(1);
 
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
@@ -131,9 +118,9 @@ public class Board {
 		}
 		
 		boolean whiteCanMove = false;
-		for (List<Integer> whiteQueen : whiteQ) {
-			int whiteQueenRow = whiteQueen.get(0);
-			int whiteQueenCol = whiteQueen.get(1);
+		for (List<Integer> queen : whiteQueens) {
+			int whiteQueenRow = queen.get(0);
+			int whiteQueenCol = queen.get(1);
 
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
@@ -153,5 +140,19 @@ public class Board {
 			hasWinner = 2;
 		}
 		return hasWinner;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 10; col++) {
+				sb.append(getTileSymbol(row, col));
+			}
+			if (row != 9) {
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
 	}
 }

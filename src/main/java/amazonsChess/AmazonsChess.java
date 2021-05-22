@@ -33,8 +33,6 @@ public class AmazonsChess {
 			
 			System.out.println(white.toString());
 			System.out.println("Black to play");
-			// System.out.println(black.getMoves(black, playerBlack));
-			// System.out.println(black.scoreMoves(black, playerBlack));
 			
 			bestPlay = black.getPlay(black, playerBlack);
 			if (bestPlay != null) {
