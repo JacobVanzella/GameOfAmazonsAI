@@ -97,7 +97,6 @@ public class COSC322Test extends GamePlayer {
 				// board)
 				ArrayList<Integer> gameBoard = new ArrayList<Integer>();
 				int[][] arrayBoard = new int[10][10];
-
 				for (int i = 0; i < gameState.size(); i++) {
 					if (i % 11 != 0 && i > 11) {
 						gameBoard.add(gameState.get(i));
@@ -106,13 +105,12 @@ public class COSC322Test extends GamePlayer {
 
 				int j = 0;
 				for (int i = 0; i < gameBoard.size(); i++) {
-					if (j >= 10)
-						j = 0;
+					if (i % 10 == 0 && i != 0)
+						j ++;
 					arrayBoard[i % 10][j] = gameBoard.get(i);
 				}
 				RecursiveAI ai = new RecursiveAI(arrayBoard);
 				List<List<Integer>> moves = ai.fetchPlays(ai, player);
-
 				int randomIndex = (int) (Math.random() * moves.size());
 				List<Integer> randomMove = moves.get(randomIndex);
 				int prevRow = randomMove.get(0);
@@ -182,8 +180,8 @@ public class COSC322Test extends GamePlayer {
 			System.err.println(e.toString());
 			System.err.println("\nERROR: Message Handling Failed\nmessageType: " + messageType + "\nmsgDetails: "
 					+ msgDetails.toString());
-			// throw(e);
-			return false;
+			throw(e);
+			//return false;
 		}
 		return true;
 	}

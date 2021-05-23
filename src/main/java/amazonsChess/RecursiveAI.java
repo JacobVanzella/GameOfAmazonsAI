@@ -157,7 +157,9 @@ public class RecursiveAI extends Board {
 		// moves
 		List<List<Integer>> moves = new ArrayList<List<Integer>>(); // will store moves in 2D list
 		List<List<Integer>> queenPos = new ArrayList<List<Integer>>();
-
+		
+		System.out.print(currBoard.toString());
+		
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 				if (currBoard.getTile(row, col) == player) {
@@ -168,7 +170,6 @@ public class RecursiveAI extends Board {
 				}
 			}
 		}
-
 		// Find possible moves for each queen
 		for (List<Integer> queenCordinates : queenPos) {
 			int currRow = queenCordinates.get(0);
