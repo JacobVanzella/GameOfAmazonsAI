@@ -92,7 +92,9 @@ public class COSC322Test extends GamePlayer {
 
 				// Update GUI board with new state after move
 				this.gamegui.updateGameState(queenPosCurr, queenPosNext, arrowPos);
-
+				gameState.set(queenPosCurr.get(0) * 11 + queenPosCurr.get(1), 0);
+				gameState.set(queenPosNext.get(0) * 11 + queenPosNext.get(1), (player == 1) ? 2 : 1);
+				gameState.set(arrowPos.get(0) * 11 + arrowPos.get(1), 3);
 				// Creates local game board that has correct size (index 0->9 x 0->9, i.e 10x10
 				// board)
 				ArrayList<Integer> gameBoard = new ArrayList<Integer>();
@@ -107,23 +109,27 @@ public class COSC322Test extends GamePlayer {
 				for (int i = 0; i < gameBoard.size(); i++) {
 					if (i % 10 == 0 && i != 0)
 						j ++;
-					arrayBoard[i % 10][j] = gameBoard.get(i);
+					arrayBoard[j][i % 10] = gameBoard.get(i);
 				}
+
 				RecursiveAI ai = new RecursiveAI(arrayBoard);
+				ai.printBoard();
+				System.out.println("PLAYER: " + player);
 				List<List<Integer>> moves = ai.fetchPlays(ai, player);
 				int randomIndex = (int) (Math.random() * moves.size());
 				List<Integer> randomMove = moves.get(randomIndex);
+				System.out.println(randomMove);
 				int prevRow = randomMove.get(0);
 				int prevCol = randomMove.get(1);
 				int nextRow = randomMove.get(2);
 				int nextCol = randomMove.get(3);
 				int spearRow = randomMove.get(4);
 				int spearCol = randomMove.get(5);
-				int prevRowAdjusted = 9 - prevRow + 1;
+				int prevRowAdjusted =  prevRow + 1;
 				int prevColAdjusted = prevCol + 1;
-				int nextRowAdjusted = 9 - nextRow + 1;
+				int nextRowAdjusted =  nextRow + 1;
 				int nextColAdjusted = nextCol + 1;
-				int spearRowAdjusted = 9 - spearRow + 1;
+				int spearRowAdjusted =  spearRow + 1;
 				int spearColAdjusted = spearCol + 1;
 				ArrayList<Integer> queenToMove = new ArrayList<Integer>();
 				queenToMove.add(prevRowAdjusted);
@@ -137,7 +143,10 @@ public class COSC322Test extends GamePlayer {
 				System.out.println(queenToMove + " " + queenGoesTo + " " + spearGoesTo);
 				this.gameClient.sendMoveMessage(queenToMove, queenGoesTo, spearGoesTo);
 				this.gamegui.updateGameState(queenToMove, queenGoesTo, spearGoesTo);
-
+				gameState.set(queenToMove.get(0) * 11 + queenToMove.get(1), 0);
+				gameState.set(queenGoesTo.get(0) * 11 + queenGoesTo.get(1), player);
+				gameState.set(spearGoesTo.get(0) * 11 + spearGoesTo.get(1), 3);
+				this.gameState = gameState;
 				break;
 
 			case GameMessage.GAME_ACTION_START:
@@ -145,7 +154,8 @@ public class COSC322Test extends GamePlayer {
 				// msgDetails.get(AmazonsGameMessage.GAME_STATE);
 				playerBlack = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				playerWhite = (String) msgDetails.get(AmazonsGameMessage.PLAYER_WHITE);
-				player = (playerBlack.equals(AmazonsGameMessage.PLAYER_BLACK)) ? 1 : 2;
+				player = (userName.equals(playerBlack)) ? 1 : 2;
+				System.out.println("PLAYER IS: " + player + " " + playerBlack + " " + userName);
 				gameState = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.GAME_STATE);
 				
 				System.out.println("\nGame Started!!\n" + playerBlack + "(B) vs. " + playerWhite + "(W)");

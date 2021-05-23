@@ -19,12 +19,12 @@ public class RecursiveAI extends Board {
 	}
 
 	public RecursiveAI(int[][] board) {
-		super();
+		super(board);
 		this.board = board;
 	}
 
 	public RecursiveAI(RecursiveAI parent) {
-		super(parent);
+		super();
 		this.parent = parent;
 	}
 
@@ -158,11 +158,11 @@ public class RecursiveAI extends Board {
 		List<List<Integer>> moves = new ArrayList<List<Integer>>(); // will store moves in 2D list
 		List<List<Integer>> queenPos = new ArrayList<List<Integer>>();
 		
-		System.out.print(currBoard.toString());
 		
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 				if (currBoard.getTile(row, col) == player) {
+					System.out.println("Row: " + row + " Col: " + col);
 					ArrayList<Integer> queenN = new ArrayList<Integer>();
 					queenN.add(row);
 					queenN.add(col);

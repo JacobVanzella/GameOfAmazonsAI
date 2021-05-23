@@ -5,32 +5,33 @@ import java.util.List;
 
 public class Board {
 
-	protected int[][] board; // can change to 2D array based on preference
+	protected int[][] board = new int[10][10]; // can change to 2D array based on preference
 	public static final int EMPTY = 0;
-	public static final int W = 1;
-	public static final int B = 2;
+	public static final int B = 1;
+	public static final int W = 2;
 	public static final int SPEAR = 3;
 
 	public Board() {
 		board = new int[][] {
-			{ 0, 0, 0, B, 0, 0, B, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ B, 0, 0, 0, 0, 0, 0, 0, 0, B },
+			{ 0, 0, 0, W, 0, 0, W, 0, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ W, 0, 0, 0, 0, 0, 0, 0, 0, W },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, W, 0, 0, W, 0, 0, 0 },
+			{ B, 0, 0, 0, 0, 0, 0, 0, 0, B },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, B, 0, 0, B, 0, 0, 0 },
 			};
 	}
 
-	public Board(Board source) {
-		this();
+	public Board(int[][] source) {
+		//this();
 		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 10; j++)
-				board[i][j] = source.board[i][j];
+			for (int j = 0; j < 10; j++) {
+				board[i][j] = source[i][j];
+			}
 	}
 
 	public int[][] getBoard() {
@@ -134,5 +135,13 @@ public class Board {
 			}
 		}
 		return sb.toString();
+	}
+	public void printBoard() {
+		for(int row = 0; row < 10; row ++) {
+			for(int col = 0; col < 10; col ++) {
+				System.out.print(getTile(row, col));
+			}
+			System.out.println();
+		}
 	}
 }
