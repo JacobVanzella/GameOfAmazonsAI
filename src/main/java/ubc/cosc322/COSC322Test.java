@@ -146,37 +146,72 @@ public class COSC322Test extends GamePlayer {
 				ai.printBoard();
 				System.out.println("PLAYER: " + player);
 				List<List<Integer>> moves = ai.fetchPlays(ai, player);
-				int randomIndex = (int) (Math.random() * moves.size());
-				List<Integer> randomMove = moves.get(randomIndex);
-				System.out.println(randomMove);
-				int prevRow = randomMove.get(0);
-				int prevCol = randomMove.get(1);
-				int nextRow = randomMove.get(2);
-				int nextCol = randomMove.get(3);
-				int spearRow = randomMove.get(4);
-				int spearCol = randomMove.get(5);
-				int prevRowAdjusted =  prevRow + 1;
-				int prevColAdjusted = prevCol + 1;
-				int nextRowAdjusted =  nextRow + 1;
-				int nextColAdjusted = nextCol + 1;
-				int spearRowAdjusted =  spearRow + 1;
-				int spearColAdjusted = spearCol + 1;
-				ArrayList<Integer> queenToMove = new ArrayList<Integer>();
-				queenToMove.add(prevRowAdjusted);
-				queenToMove.add(prevColAdjusted);
-				ArrayList<Integer> queenGoesTo = new ArrayList<Integer>();
-				queenGoesTo.add(nextRowAdjusted);
-				queenGoesTo.add(nextColAdjusted);
-				ArrayList<Integer> spearGoesTo = new ArrayList<Integer>();
-				spearGoesTo.add(spearRowAdjusted);
-				spearGoesTo.add(spearColAdjusted);
-				System.out.println(queenToMove + " " + queenGoesTo + " " + spearGoesTo);
-				this.gameClient.sendMoveMessage(queenToMove, queenGoesTo, spearGoesTo);
-				this.gamegui.updateGameState(queenToMove, queenGoesTo, spearGoesTo);
-				gameState.set(queenToMove.get(0) * 11 + queenToMove.get(1), 0);
-				gameState.set(queenGoesTo.get(0) * 11 + queenGoesTo.get(1), player);
-				gameState.set(spearGoesTo.get(0) * 11 + spearGoesTo.get(1), 3);
-				this.gameState = gameState;
+				if (moves.size() != 0) {
+					int randomIndex = (int) (Math.random() * moves.size());
+					List<Integer> randomMove = moves.get(randomIndex);
+					System.out.println(randomMove);
+					int prevRow = randomMove.get(0);
+					int prevCol = randomMove.get(1);
+					int nextRow = randomMove.get(2);
+					int nextCol = randomMove.get(3);
+					int spearRow = randomMove.get(4);
+					int spearCol = randomMove.get(5);
+					int prevRowAdjusted = prevRow + 1;
+					int prevColAdjusted = prevCol + 1;
+					int nextRowAdjusted = nextRow + 1;
+					int nextColAdjusted = nextCol + 1;
+					int spearRowAdjusted = spearRow + 1;
+					int spearColAdjusted = spearCol + 1;
+					ArrayList<Integer> queenToMove = new ArrayList<Integer>();
+					queenToMove.add(prevRowAdjusted);
+					queenToMove.add(prevColAdjusted);
+					ArrayList<Integer> queenGoesTo = new ArrayList<Integer>();
+					queenGoesTo.add(nextRowAdjusted);
+					queenGoesTo.add(nextColAdjusted);
+					ArrayList<Integer> spearGoesTo = new ArrayList<Integer>();
+					spearGoesTo.add(spearRowAdjusted);
+					spearGoesTo.add(spearColAdjusted);
+					System.out.println(queenToMove + " " + queenGoesTo + " " + spearGoesTo);
+					this.gameClient.sendMoveMessage(queenToMove, queenGoesTo, spearGoesTo);
+					this.gamegui.updateGameState(queenToMove, queenGoesTo, spearGoesTo);
+					gameState.set(queenToMove.get(0) * 11 + queenToMove.get(1), 0);
+					gameState.set(queenGoesTo.get(0) * 11 + queenGoesTo.get(1), player);
+					gameState.set(spearGoesTo.get(0) * 11 + spearGoesTo.get(1), 3);
+					this.gameState = gameState;
+				} else {
+					//If there are no moves avaliable, move to a random spot on the board and throw a spear
+					//to a random spot, hope the opponent is not checking valid moves.
+					int dummyQueenRow = 1;
+					int dummyQueenCol = 1;
+					for ( int i = 0 ; i < 10; i ++) {
+						for( int ii = 0; ii < 10; ii ++) {
+							if(ai.getTile(i, ii) == player) {
+								dummyQueenRow = i;
+								dummyQueenCol = ii;
+							}
+						}
+					}
+					int dummyToRow = (int) (Math.random() * 10 + 1);
+					int dummyToCol = (int) (Math.random() * 10 + 1);
+					int dummySpearRow = (int) (Math.random() * 10 + 1);
+					int dummySpearCol = (int) (Math.random() * 10 + 1);
+					ArrayList<Integer> dummyQueenLoc = new ArrayList<Integer>();
+					dummyQueenLoc.add(dummyQueenRow);
+					dummyQueenLoc.add(dummyQueenCol);
+					ArrayList<Integer> dummyQueenTo = new ArrayList<Integer>();
+					dummyQueenTo.add(dummyToRow);
+					dummyQueenTo.add(dummyToCol);
+					ArrayList<Integer> dummySpear = new ArrayList<Integer>();
+					dummySpear.add(dummySpearRow);
+					dummySpear.add(dummySpearCol);
+					System.out.println(dummyQueenLoc + " " + dummyQueenTo + " " + dummySpear);
+					this.gameClient.sendMoveMessage(dummyQueenLoc, dummyQueenTo, dummySpear);
+					this.gamegui.updateGameState(dummyQueenLoc, dummyQueenTo, dummySpear);
+					gameState.set(dummyQueenRow * 11 + dummyQueenCol, 0);
+					gameState.set(dummyToRow * 11 + dummyToCol, player);
+					gameState.set(dummySpearRow * 11 + dummySpearCol, 3);
+					this.gameState = gameState;
+				}
 				break;
 
 			case GameMessage.GAME_ACTION_START:
