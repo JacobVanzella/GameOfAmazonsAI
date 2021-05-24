@@ -92,6 +92,36 @@ public class COSC322Test extends GamePlayer {
 
 				// Update GUI board with new state after move
 				this.gamegui.updateGameState(queenPosCurr, queenPosNext, arrowPos);
+				
+				//Check to see if the opponent made a valid move
+				// Will look at all possible moves for opponent and make sure it contains their move.
+				ArrayList<Integer> testBoard = new ArrayList<Integer>();
+				int[][] arrayTestBoard = new int[10][10];
+				for (int i = 0; i < gameState.size(); i++) {
+					if (i % 11 != 0 && i > 11) {
+						testBoard.add(gameState.get(i));
+					}
+				}
+
+				int k = 0;
+				for (int i = 0; i < testBoard.size(); i++) {
+					if (i % 10 == 0 && i != 0)
+						k ++;
+					arrayTestBoard[k][i % 10] = testBoard.get(i);
+				}
+				RecursiveAI testMove = new RecursiveAI(arrayTestBoard);
+				ArrayList<Integer> opponentMove = new ArrayList<Integer>();
+				opponentMove.addAll(queenPosCurr);
+				opponentMove.addAll(queenPosNext);
+				opponentMove.addAll(arrowPos);
+				List<List<Integer>> opponentValidMoves = testMove.fetchPlays(testMove, (player == 1) ? 2 : 1);
+				if( opponentValidMoves.contains(opponentMove) == false) {
+					System.out.println("Opponent made an invalid move");
+					this.gameClient.sendTextMessage("Opponent made an invalid move");
+				}
+				// End valid move checker
+				
+				// Update local board with most recent move
 				gameState.set(queenPosCurr.get(0) * 11 + queenPosCurr.get(1), 0);
 				gameState.set(queenPosNext.get(0) * 11 + queenPosNext.get(1), (player == 1) ? 2 : 1);
 				gameState.set(arrowPos.get(0) * 11 + arrowPos.get(1), 3);
@@ -150,23 +180,42 @@ public class COSC322Test extends GamePlayer {
 				break;
 
 			case GameMessage.GAME_ACTION_START:
-				// gameState = (ArrayList<Integer>)
-				// msgDetails.get(AmazonsGameMessage.GAME_STATE);
 				playerBlack = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				playerWhite = (String) msgDetails.get(AmazonsGameMessage.PLAYER_WHITE);
 				player = (userName.equals(playerBlack)) ? 1 : 2;
 				System.out.println("PLAYER IS: " + player + " " + playerBlack + " " + userName);
-				gameState = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.GAME_STATE);
+				//gameState = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.GAME_STATE);
 				
 				System.out.println("\nGame Started!!\n" + playerBlack + "(B) vs. " + playerWhite + "(W)");
-				System.out.print("Board State: ");
-				for (int i = 11; i < gameState.size(); i++) {
-					if (i % 11 == 0)
-						System.out.println();
-					else
-						System.out.print(gameState.get(i));
+				if( player == 1) {
+					int firstQueenPrevRow = 10;
+					int firstQueenPrevCol = 4;
+					int firstQueenNextRow = 4;
+					int firstQueenNextCol = 4;
+					int firstSpearRow = 4;
+					int firstSpearCol = 7;
+										
+					ArrayList<Integer> queenFirstMove = new ArrayList<Integer>();
+					queenFirstMove.add(firstQueenPrevRow);
+					queenFirstMove.add(firstQueenPrevCol);
+					ArrayList<Integer> queenMovesTo = new ArrayList<Integer>();
+					queenMovesTo.add(firstQueenNextRow);
+					queenMovesTo.add(firstQueenNextCol);
+					ArrayList<Integer> spearLands = new ArrayList<Integer>();
+					spearLands.add(firstSpearRow);
+					spearLands.add(firstSpearCol);
+					this.gameClient.sendMoveMessage(queenFirstMove, queenMovesTo, spearLands);
+					this.gamegui.updateGameState(queenFirstMove, queenMovesTo, spearLands);
+					gameState.set(firstQueenPrevRow * 11 + firstQueenPrevCol, 0);
+					gameState.set(firstQueenNextRow * 11 + firstQueenNextCol, player);
+					gameState.set(firstSpearRow * 11 + firstSpearCol, 3);
+					this.gameState = gameState;
 				}
-				System.out.println("\n");
+				/*
+				 * System.out.print("Board State: "); for (int i = 11; i < gameState.size();
+				 * i++) { if (i % 11 == 0) System.out.println(); else
+				 * System.out.print(gameState.get(i)); } System.out.println("\n");
+				 */ 
 				break;
 
 			case GameMessage.GAME_STATE_BOARD:
