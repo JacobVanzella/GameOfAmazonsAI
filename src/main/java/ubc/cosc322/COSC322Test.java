@@ -29,6 +29,10 @@ public class COSC322Test extends GamePlayer {
 	// @param args for name and passwd (current, any string would work)
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
+		
+		RecursiveAI testBot = new RecursiveAI();
+		testBot.fixedGetMoves(testBot, 2);
+		System.out.println(testBot);
 
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -77,7 +81,9 @@ public class COSC322Test extends GamePlayer {
 		String playerBlack, playerWhite;
 		gameState = this.gameState;
 		System.out.println("Message Type: " + messageType);
-
+		
+		
+		
 		// Catches failure to handle message and returns false with error printed to
 		// console
 		try {
@@ -141,11 +147,23 @@ public class COSC322Test extends GamePlayer {
 						j ++;
 					arrayBoard[j][i % 10] = gameBoard.get(i);
 				}
-
+				
+				int[][] testArray = new int[10][10];
+				for( int i = 0; i < 10; i++) {
+					for(int m = 0; m < 10; m ++) {
+						testArray[m][i] = arrayBoard[m][i];
+					}
+				}
+				
 				RecursiveAI ai = new RecursiveAI(arrayBoard);
 				ai.printBoard();
 				System.out.println("PLAYER: " + player);
 				List<List<Integer>> moves = ai.fetchPlays(ai, player);
+				
+				RecursiveAI testai = new RecursiveAI(testArray);
+				List<List<Integer>> fixedMoves = testai.fixedGetMoves(testai, player);
+				System.out.println("Currn List: "+moves);
+				System.out.println("Fixed List: " + fixedMoves);
 				if (moves.size() != 0) {
 					int randomIndex = (int) (Math.random() * moves.size());
 					List<Integer> randomMove = moves.get(randomIndex);
