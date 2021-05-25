@@ -5,6 +5,14 @@ import java.util.List;
 public class AmazonsChess {
 	public static void main(String[] args) {
 
+		
+		// This is not yet working
+		// it will be able to test the AI's offline
+		//
+		//
+		//
+		//
+		
 		Board board = new Board();
 		System.out.println(board.toString());
 
@@ -16,31 +24,17 @@ public class AmazonsChess {
 		int[][] blackBoard = new int[10][10];
 
 		while (board.hasWinner() == 0) {
-			List<Integer> bestPlay = white.getPlay(white, playerWhite);
 
-			if (bestPlay != null) {
-				board.moveQueen(bestPlay.get(0), bestPlay.get(1), bestPlay.get(2), bestPlay.get(3), playerWhite);
-				board.throwSpear(bestPlay.get(4), bestPlay.get(5));
-			} else {
-				break;
-			}
-
-			white.makeBestPlay(white, playerWhite);
+			// White makes move
+			
 			whiteBoard = white.getBoard();
 			black.updateBoard(whiteBoard);
 
 			System.out.println(white.toString());
 			System.out.println("Black to play\n");
-
-			bestPlay = black.getPlay(black, playerBlack);
-			if (bestPlay != null) {
-				board.moveQueen(bestPlay.get(0), bestPlay.get(1), bestPlay.get(2), bestPlay.get(3), playerBlack);
-				board.throwSpear(bestPlay.get(4), bestPlay.get(5));
-			} else {
-				break;
-			}
-
-			black.makeBestPlay(black, playerBlack);
+			
+			// Black makes move
+			
 			blackBoard = black.getBoard();
 			white.updateBoard(blackBoard);
 
