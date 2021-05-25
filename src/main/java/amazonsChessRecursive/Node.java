@@ -5,16 +5,35 @@ import java.util.List;
 
 public class Node {
 
-	public Node parentNode; 
-	public List<Node> children; 
-	public String data;
-
-	public Node getParentNode() {
-		return parentNode;
+	private Node parentNode; 
+	private List<Node> children; 
+	private int[][] moveList;
+	private int score;
+	
+	public Node(int[][] prevMoves, int[] move, Node parentNode) {
+		int depth = prevMoves.length + 1;
+		this.parentNode = parentNode;
+		this.moveList = new int[depth][6];
+				
+		for (int i = 0; i < depth - 1; i++) {
+			for (int j = 0; j < 6; j++) {
+				this.moveList[i][j] = prevMoves[i][j];
+			}
+		}
+		
+		for (int i = 0; i < 6; i++) {
+			this.moveList[depth - 1][i] = move[i];
+		}
+		
+		ArrayList<Node> children = new ArrayList<Node>();
 	}
-
+	
 	public void setParentNode(Node parentNode) {
 		this.parentNode = parentNode;
+	}
+	
+	public Node getParentNode() {
+		return parentNode;
 	}
 
 	public void setChildren(List<Node> children) {
@@ -24,40 +43,30 @@ public class Node {
 	public List<Node> getChildren() {
 		return this.getChildren();
 	}
-
-	public String getDataValue() {
-		return data;
+	
+	public int[][] getMoveList() {
+		return this.moveList;
 	}
-
-	public void String(String dataValue) {
-		this.data = dataValue;
+	
+	public void setScore(int score) {
+		this.score = score;
 	}
-
-	public static int getBranchingFactor() {
-		return branchingFactor;
+	
+	public int getScore() {
+		return this.score;
 	}
-
-	public static void setMaxNumberOfChildren(int branchingFactor) {
-		Node.branchingFactor = branchingFactor;
-	}
-
-	public static int branchingFactor; 
-
-	public Node(String data) {
-		this.data = data;
-		ArrayList<Node> children = new ArrayList<Node>(branchingFactor);
-	}
-
-	public void addChild(Node childNaryTreeNode, int position) throws Exception {
-		if (position >= branchingFactor - 1) {
-			throw new Exception("Max number of childeren reached");
-		} else {
-			System.out.println("this.children=" + this.children);
-			if (this.children.get(position) != null) { 
-			} else {
-				childNaryTreeNode.parentNode = this;
-				this.children.set(position, childNaryTreeNode);
+	
+	public String toString() {
+		String myMoves;
+		
+		for (int[] arr : this.moveList) {
+			myMoves += "[";
+			for (int val : arr) {
+				myMoves += val + " ";
 			}
+			myMoves += "],";
 		}
+		
+		return myMoves;
 	}
 }
