@@ -57,7 +57,7 @@ public class Node {
 	}
 	
 	public String toString() {
-		String myMoves;
+		String myMoves = "";
 		
 		for (int[] arr : this.moveList) {
 			myMoves += "[";
