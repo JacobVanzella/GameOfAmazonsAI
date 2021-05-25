@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Node {
 
-	public Node parentNode; // The parent of the current node
-	public List<Node> childList; // The children's of the current node
-	public String dataValue;
+	public Node parentNode; 
+	public List<Node> children; 
+	public String data;
 
 	public Node getParentNode() {
 		return parentNode;
@@ -17,8 +17,8 @@ public class Node {
 		this.parentNode = parentNode;
 	}
 
-	public void setChildren(List<Node> childList) {
-		this.childList = childList;
+	public void setChildren(List<Node> children) {
+		this.children = children;
 	}
 
 	public List<Node> getChildren() {
@@ -26,38 +26,37 @@ public class Node {
 	}
 
 	public String getDataValue() {
-		return dataValue;
+		return data;
 	}
 
 	public void String(String dataValue) {
-		this.dataValue = dataValue;
+		this.data = dataValue;
 	}
 
-	public static int getMaxNumberOfChildren() {
-		return maxNumberOfChildren;
+	public static int getBranchingFactor() {
+		return branchingFactor;
 	}
 
-	public static void setMaxNumberOfChildren(int maxNumberOfChildren) {
-		Node.maxNumberOfChildren = maxNumberOfChildren;
+	public static void setMaxNumberOfChildren(int branchingFactor) {
+		Node.branchingFactor = branchingFactor;
 	}
 
-	public static int maxNumberOfChildren; // Equal to the n-arity;
+	public static int branchingFactor; 
 
-	public Node(String dataValue) {
-		this.dataValue = dataValue;
-		ArrayList<Node> children = new ArrayList<Node>(maxNumberOfChildren);
+	public Node(String data) {
+		this.data = data;
+		ArrayList<Node> children = new ArrayList<Node>(branchingFactor);
 	}
 
 	public void addChild(Node childNaryTreeNode, int position) throws Exception {
-		if (position >= maxNumberOfChildren - 1) {
+		if (position >= branchingFactor - 1) {
 			throw new Exception("Max number of childeren reached");
 		} else {
-			System.out.println("this.children=" + this.childList);
-			if (this.childList.get(position) != null) {
-				// There is already a child node on this position; throw some error;
+			System.out.println("this.children=" + this.children);
+			if (this.children.get(position) != null) { 
 			} else {
 				childNaryTreeNode.parentNode = this;
-				this.childList.set(position, childNaryTreeNode);
+				this.children.set(position, childNaryTreeNode);
 			}
 		}
 	}
