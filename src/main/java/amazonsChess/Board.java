@@ -35,7 +35,13 @@ public class Board {
 	}
 
 	public int[][] getBoard() {
-		return this.board;
+		int[][] tempBoard = new int[10][10];
+		for( int i = 0; i < 10; i ++) {
+			for( int j = 0; j < 10; j++) {
+				tempBoard[j][i] = this.board[j][i];
+			}
+		}
+		return tempBoard;
 	}
 
 	public void updateBoard(int[][] newBoard) {

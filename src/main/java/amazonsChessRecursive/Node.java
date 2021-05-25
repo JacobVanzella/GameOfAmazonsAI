@@ -10,9 +10,10 @@ public class Node {
 	private int[][] moveList;
 	private int score;
 	
-	public Node(int[][] prevMoves, int[] move, Node parentNode) {
+	public Node(int[][] prevMoves, int[] move, Node parentNode, int score) {
 		int depth = prevMoves.length + 1;
 		this.parentNode = parentNode;
+		this.score = score;
 		this.moveList = new int[depth][6];
 				
 		for (int i = 0; i < depth - 1; i++) {

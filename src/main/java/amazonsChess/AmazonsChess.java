@@ -16,10 +16,12 @@ public class AmazonsChess {
 		Board board = new Board();
 		System.out.println(board.toString());
 
-		int playerWhite = 1;
-		int playerBlack = 2;
+		int playerBlack = 1;
+		int playerWhite = 2;
+		
 		RecursiveAI white = new RecursiveAI();
 		RecursiveAI black = new RecursiveAI();
+		
 		int[][] whiteBoard = new int[10][10];
 		int[][] blackBoard = new int[10][10];
 
