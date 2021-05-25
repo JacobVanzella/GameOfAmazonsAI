@@ -31,8 +31,15 @@ public class COSC322Test extends GamePlayer {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		
 		RecursiveAI testBot = new RecursiveAI();
-		testBot.fixedGetMoves(testBot, 2);
-		System.out.println(testBot);
+		List<int[]> moves = testBot.getMovesArray(testBot, 2);
+		
+		for( int[] move : moves) {
+			System.out.print("[");
+			for( int i = 0; i < move.length; i ++) {
+				System.out.print(move[i] + ", " );
+			}
+			System.out.println("]");
+		}
 
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -115,13 +122,10 @@ public class COSC322Test extends GamePlayer {
 						k ++;
 					arrayTestBoard[k][i % 10] = testBoard.get(i);
 				}
-				RecursiveAI testMove = new RecursiveAI(arrayTestBoard);
-				ArrayList<Integer> opponentMove = new ArrayList<Integer>();
-				opponentMove.addAll(queenPosCurr);
-				opponentMove.addAll(queenPosNext);
-				opponentMove.addAll(arrowPos);
-				List<List<Integer>> opponentValidMoves = testMove.fetchPlays(testMove, (player == 1) ? 2 : 1);
-				if( opponentValidMoves.contains(opponentMove) == false) {
+				RecursiveAI testOpponentMove = new RecursiveAI(arrayTestBoard);
+				
+				int[] opponentMove = new int[] {queenPosCurr.get(0), queenPosCurr.get(1), queenPosNext.get(0), queenPosNext.get(1), arrowPos.get(0), arrowPos.get(1)};
+				if( testOpponentMove.wasValidMove(testOpponentMove, (player == 1) ? 2 : 1, opponentMove) == false) {
 					System.out.println("Opponent made an invalid move");
 					this.gameClient.sendTextMessage("Opponent made an invalid move");
 				}
@@ -148,22 +152,13 @@ public class COSC322Test extends GamePlayer {
 					arrayBoard[j][i % 10] = gameBoard.get(i);
 				}
 				
-				int[][] testArray = new int[10][10];
-				for( int i = 0; i < 10; i++) {
-					for(int m = 0; m < 10; m ++) {
-						testArray[m][i] = arrayBoard[m][i];
-					}
-				}
 				
 				RecursiveAI ai = new RecursiveAI(arrayBoard);
 				ai.printBoard();
 				System.out.println("PLAYER: " + player);
-				List<List<Integer>> moves = ai.fetchPlays(ai, player);
+				List<List<Integer>> moves = ai.getMoves(ai, player);
 				
-				RecursiveAI testai = new RecursiveAI(testArray);
-				List<List<Integer>> fixedMoves = testai.fixedGetMoves(testai, player);
 				System.out.println("Currn List: "+moves);
-				System.out.println("Fixed List: " + fixedMoves);
 				if (moves.size() != 0) {
 					int randomIndex = (int) (Math.random() * moves.size());
 					List<Integer> randomMove = moves.get(randomIndex);
