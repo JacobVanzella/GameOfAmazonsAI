@@ -47,8 +47,7 @@ public class Tree {
 	}
 
 	public void getDepth() { // Q: this is checking the depth of the left-most branch, if this is a terminal
-								// node immediatly,
-								// but the others are not, wont this lead to a "false depth"
+								// node immediatly, but the others are not, wont this lead to a "false depth"
 		Node node = this.root;
 		int depth = 0;
 		while (node != null) {
@@ -59,7 +58,6 @@ public class Tree {
 				node = children.get(0);
 				depth++;
 			}
-
 			this.depth = depth;
 		}
 	}
@@ -67,9 +65,9 @@ public class Tree {
 	public void expandFrontier() {
 		Node frontierNode = this.frontier.get(0);
 		List<Node> newFoundNodes = expandNode(frontierNode);
+		this.foundNodes.add(frontierNode); // if errors, check these children
 		for( Node node : newFoundNodes) {
 			this.frontier.add(node);
-			this.foundNodes.add(node);
 		}
 		this.frontier.remove(0);
 		
@@ -102,8 +100,11 @@ public class Tree {
 			testMove.throwSpear(newMove[4], newMove[5]);
 			int moveScore = testMove.scoreMove(testMove.getBoard(), newMove, player);
 			Node newChild = new Node(parentMoveList, newMove, node, moveScore);
+			newChild.setChildren(null); // sets children list to null if leaf node
 			discoveredNodes.add(newChild);
 		}
+		//updates children since no longer a leaf, used for searching
+		node.setChildren(discoveredNodes);
 		return discoveredNodes;
 	}
 
@@ -120,6 +121,11 @@ public class Tree {
 	}
 
 	public Node maxValue(Node s, int alpha, int beta) {
+		int max = -Integer.MIN_VALUE;
+		for ( Node child : s.getChildren()) {
+			//int 
+		}
+		
 		return null;
 	}
 
