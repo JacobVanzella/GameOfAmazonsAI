@@ -10,6 +10,7 @@ public class Tree {
 	private Node root;
 	private int depth;
 	private ArrayList<Node> frontier = new ArrayList<Node>();
+	private ArrayList<Node> foundNodes = new ArrayList<Node>();
 	private int[][] board = new int[10][10];
 	int player = 0;
 	int opponent = 0;
@@ -68,7 +69,10 @@ public class Tree {
 		List<Node> newFoundNodes = expandNode(frontierNode);
 		for( Node node : newFoundNodes) {
 			this.frontier.add(node);
+			this.foundNodes.add(node);
 		}
+		this.frontier.remove(0);
+		
 	}
 
 	public List<Node> expandNode(Node node){
