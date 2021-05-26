@@ -104,14 +104,11 @@ public class Tree {
 	}
 
 	public int getNodeDepth(Node node) {
-		int nodeDepth = 0;
 		if (node.getParentNode() != null) {
-			nodeDepth++;
-			getNodeDepth(node.getParentNode());
+			return 1 + getNodeDepth(node.getParentNode());
 		} else {
-			return nodeDepth;
+			return 0;
 		}
-		return -1;
 	}
 
 	public void deleteFrontier() {
