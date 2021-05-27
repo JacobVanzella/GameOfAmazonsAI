@@ -61,6 +61,14 @@ public class Tree {
 			this.depth = depth;
 		}
 	}
+	
+	public int getNodeDepth(Node node) {
+        if (node.getParentNode() != null) {
+            return 1 + getNodeDepth(node.getParentNode());
+        } else {
+            return 0;
+        }
+    }
 
 	public void expandFrontier() {
 		Node frontierNode = this.frontier.get(0);
@@ -131,5 +139,83 @@ public class Tree {
 
 	public Node minValue(Node s, int alpha, int beta) {
 		return null;
+	}
+	
+	public int[] alphaBeta(Node node, int alpha, int beta) {
+		int[6] currentMove;// = currentNode.getLastMove();
+		int max, min;
+		
+		// Handle terminal case (leaf of tree)
+		if (node.getChildren() == null) {
+			int[] returnVal = new int[7];
+			returnVal[0] = node.getScore();
+			for (int i = 1; i < 8; i++) {
+				returnVal[i] = currentMove[i-1];
+			}
+			
+			return returnVal; 
+		}
+		
+		if (this.getNodeDepth(node) % 2 == 0) { // Max turn
+			for (Node child : node.getChildren()) {
+				currentMove = alphaBeta(child, alpha, beta);
+				
+				if (node.getScore() > max) {
+					max = node.getScore();
+				}
+				
+				if (node.getScore() >= beta) {
+					int[] returnVal = new int[7];
+					returnVal[0] = max;
+					for (int i = 1; i < 8; i++) {
+						returnVal[i] = currentMove[i-1];
+					}
+					
+					return returnVal; 
+				}
+				
+				if (node.getScore() > alpha) {
+					alpha = node.getScore();
+				}
+			}
+			
+			int[] returnVal = new int[7];
+			returnVal[0] = max;
+			for (int i = 1; i < 8; i++) {
+				returnVal[i] = currentMove[i-1];
+			}
+			
+			return returnVal;
+		} else { // Min turn
+			for (Node child : node.getChildren()) {
+				currentMove = alphaBeta(child, alpha, beta);
+				
+				if (node.getScore() < min) {
+					min = node.getScore();
+				}
+				
+				if (node.getScore() <= alpha) {
+					int[] returnVal = new int[7];
+					returnVal[0] = min;
+					for (int i = 1; i < 8; i++) {
+						returnVal[i] = currentMove[i-1];
+					}
+					
+					return returnVal; 
+				}
+				
+				if (node.getScore() < beta) {
+					beta = node.getScore();
+				}
+			}
+			
+			int[] returnVal = new int[7];
+			returnVal[0] = min;
+			for (int i = 1; i < 8; i++) {
+				returnVal[i] = currentMove[i-1];
+			}
+			
+			return returnVal;
+		}
 	}
 }
