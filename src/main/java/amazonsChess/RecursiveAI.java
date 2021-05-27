@@ -52,12 +52,12 @@ public class RecursiveAI extends Board {
 		List<List<Integer>> moves = new ArrayList<List<Integer>>(); // will store moves in 2D list
 		List<List<Integer>> queenPos = new ArrayList<List<Integer>>();
 
-		System.out.println(currBoard.toString());
+		// System.out.println(currBoard.toString());
 
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 				if (currBoard.getTile(row, col) == player) {
-					System.out.println("Row: " + row + " Col: " + col);
+					// System.out.println("Row: " + row + " Col: " + col);
 					ArrayList<Integer> queenN = new ArrayList<Integer>();
 					queenN.add(row);
 					queenN.add(col);
@@ -121,7 +121,7 @@ public class RecursiveAI extends Board {
 													move.add(nextCol);
 													move.add(spearRow);
 													move.add(spearCol);
-													System.out.println(move);
+													//System.out.println(move);
 													moves.add(move);
 													spearDist++;
 												} else {
@@ -161,7 +161,7 @@ public class RecursiveAI extends Board {
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 				if (currBoard.getTile(row, col) == player) {
-					System.out.println("Row: " + row + " Col: " + col); // for debugging
+					// System.out.println("Row: " + row + " Col: " + col); // for debugging
 					ArrayList<Integer> queenN = new ArrayList<Integer>();
 					queenN.add(row);
 					queenN.add(col);
@@ -184,7 +184,7 @@ public class RecursiveAI extends Board {
 
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
-					// System.out.println(currBoard.toString());
+					// .println(currBoard.toString());
 					canMove = true;
 					dist = 1;
 					try {
@@ -213,11 +213,11 @@ public class RecursiveAI extends Board {
 											while (spearCanMove) {
 												spearRow = nextRow + k * spearDist;
 												spearCol = nextCol + r * spearDist;
-												// System.out.println(currRow + " " + currCol + " " + nextRow + " " +
+												// .println(currRow + " " + currCol + " " + nextRow + " " +
 												// nextCol);
-												// System.out.println(spearRow + " " + spearCol);
+												// .println(spearRow + " " + spearCol);
 												if (testboard.getTile(spearRow, spearCol) == EMPTY) {
-													// System.out.println(testboard.toString());
+													// .println(testboard.toString());
 													int[] move = new int[] { currRow, currCol, nextRow, nextCol,
 															spearRow, spearCol };
 													moves.add(move);

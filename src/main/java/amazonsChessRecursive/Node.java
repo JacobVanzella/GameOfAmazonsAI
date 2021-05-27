@@ -16,6 +16,7 @@ public class Node {
 		this.score = score;
 		this.moveList = new int[depth][6];
 				
+		try {
 		for (int i = 0; i < depth - 1; i++) {
 			for (int j = 0; j < 6; j++) {
 				this.moveList[i][j] = prevMoves[i][j];
@@ -24,6 +25,9 @@ public class Node {
 		
 		for (int i = 0; i < 6; i++) {
 			this.moveList[depth - 1][i] = move[i];
+		}
+		} catch( Exception e){
+			System.out.println("Created rooter");
 		}
 		
 		ArrayList<Node> children = new ArrayList<Node>();

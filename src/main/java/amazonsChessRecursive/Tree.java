@@ -10,7 +10,7 @@ public class Tree {
 	private Node root;
 	private int depth;
 	private ArrayList<Node> frontier = new ArrayList<Node>();
-	private ArrayList<Node> foundNodes = new ArrayList<Node>();
+	public ArrayList<Node> foundNodes = new ArrayList<Node>();
 	private int[][] board = new int[10][10];
 	int player = 0;
 	int opponent = 0;
@@ -37,7 +37,8 @@ public class Tree {
 
 		// While timer elapsed < 20 seconds (for now), do again. /1e3 comverts from ms
 		// to s
-		while ((currTime - startTime) / 1000 < 20) {
+		while ((currTime - startTime) / 1000 < 4) {
+			System.out.println((currTime - startTime) / 1000);
 			
 			expandFrontier();
 			
@@ -116,14 +117,6 @@ public class Tree {
 		return discoveredNodes;
 	}
 
-	public int getNodeDepth(Node node) {
-		if (node.getParentNode() != null) {
-			return 1 + getNodeDepth(node.getParentNode());
-		} else {
-			return 0;
-		}
-	}
-
 	public void deleteFrontier() {
 
 	}
@@ -142,8 +135,8 @@ public class Tree {
 	}
 	
 	public int[] alphaBeta(Node node, int alpha, int beta) {
-		int[6] currentMove;// = currentNode.getLastMove();
-		int max, min;
+		int[] currentMove = new int[6];// = currentNode.getLastMove();
+		int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
 		
 		// Handle terminal case (leaf of tree)
 		if (node.getChildren() == null) {
@@ -159,6 +152,7 @@ public class Tree {
 		if (this.getNodeDepth(node) % 2 == 0) { // Max turn
 			for (Node child : node.getChildren()) {
 				currentMove = alphaBeta(child, alpha, beta);
+				
 				
 				if (node.getScore() > max) {
 					max = node.getScore();

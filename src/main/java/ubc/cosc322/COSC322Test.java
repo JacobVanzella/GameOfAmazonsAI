@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import amazonsChess.RecursiveAI;
+import amazonsChessRecursive.Node;
+import amazonsChessRecursive.Tree;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -31,15 +33,19 @@ public class COSC322Test extends GamePlayer {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		
 		RecursiveAI testBot = new RecursiveAI();
-		List<int[]> moves = testBot.getMovesArray(testBot, 2);
+		int[][] prevMoves = new int[0][0];
+		int[] currentMove = new int[0];
 		
-		for( int[] move : moves) {
-			System.out.print("[");
-			for( int i = 0; i < move.length; i ++) {
-				System.out.print(move[i] + ", " );
-			}
-			System.out.println("]");
-		}
+		Node root = new Node(prevMoves, currentMove, null, -1);
+		Tree tree = new Tree(root, testBot, 1);
+		//System.out.println(tree.foundNodes);
+		//System.out.println("HERE"+tree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+		
+		/*
+		 * for( int[] move : moves) { System.out.print("["); for( int i = 0; i <
+		 * move.length; i ++) { System.out.print(move[i] + ", " ); }
+		 * System.out.println("]"); }
+		 */
 
 		if (player.getGameGUI() == null) {
 			player.Go();
