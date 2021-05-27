@@ -33,13 +33,14 @@ public class COSC322Test extends GamePlayer {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		
 		RecursiveAI testBot = new RecursiveAI();
-		int[][] prevMoves = new int[0][0];
-		int[] currentMove = new int[0];
+		int[][] prevMoves = new int[1][6];
+		int[] currentMove = new int[6];
+		System.out.println(testBot.toString());
 		
 		Node root = new Node(prevMoves, currentMove, null, -1);
 		Tree tree = new Tree(root, testBot, 1);
 		//System.out.println(tree.foundNodes);
-		//System.out.println("HERE"+tree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+		System.out.println("HERE"+tree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
 		
 		/*
 		 * for( int[] move : moves) { System.out.print("["); for( int i = 0; i <

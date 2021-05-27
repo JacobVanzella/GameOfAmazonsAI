@@ -5,38 +5,45 @@ import java.util.List;
 
 public class Node {
 
-	private Node parentNode; 
-	private List<Node> children; 
+	private Node parentNode;
+	private List<Node> children;
 	private int[][] moveList;
 	private int score;
-	
+
 	public Node(int[][] prevMoves, int[] move, Node parentNode, int score) {
 		int depth = prevMoves.length + 1;
 		this.parentNode = parentNode;
 		this.score = score;
-		this.moveList = new int[depth][6];
-				
-		try {
-		for (int i = 0; i < depth - 1; i++) {
-			for (int j = 0; j < 6; j++) {
-				this.moveList[i][j] = prevMoves[i][j];
+		//System.out.println(prevMoves.length);
+		if (prevMoves[0][0] == 0 && prevMoves[0][1] == 0 && prevMoves[0][2] == 0 && prevMoves[0][3] == 0
+				&& prevMoves[0][4] == 0 && prevMoves[0][5] == 0) {
+			this.moveList = new int[1][6];
+			for (int i = 0; i < 6; i++) {
+				this.moveList[0][i] = move[i];
+			}
+		} else {
+			this.moveList = new int[depth][6];
+			try {
+				for (int i = 0; i < depth - 1; i++) {
+					for (int j = 0; j < 6; j++) {
+						this.moveList[i][j] = prevMoves[i][j];
+					}
+				}
+
+				for (int i = 0; i < 6; i++) {
+					this.moveList[depth - 1][i] = move[i];
+				}
+			} catch (Exception e) {
+				System.out.println("Created rooter");
 			}
 		}
-		
-		for (int i = 0; i < 6; i++) {
-			this.moveList[depth - 1][i] = move[i];
-		}
-		} catch( Exception e){
-			System.out.println("Created rooter");
-		}
-		
-		ArrayList<Node> children = new ArrayList<Node>();
+		// ArrayList<Node> children = new ArrayList<Node>();
 	}
-	
+
 	public void setParentNode(Node parentNode) {
 		this.parentNode = parentNode;
 	}
-	
+
 	public Node getParentNode() {
 		return parentNode;
 	}
@@ -48,22 +55,22 @@ public class Node {
 	public List<Node> getChildren() {
 		return this.getChildren();
 	}
-	
+
 	public int[][] getMoveList() {
 		return this.moveList;
 	}
-	
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public int getScore() {
 		return this.score;
 	}
-	
+
 	public String toString() {
 		String myMoves = "";
-		
+
 		for (int[] arr : this.moveList) {
 			myMoves += "[";
 			for (int val : arr) {
@@ -71,7 +78,7 @@ public class Node {
 			}
 			myMoves += "],";
 		}
-		
+
 		return myMoves;
 	}
 }

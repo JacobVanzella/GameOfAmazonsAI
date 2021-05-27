@@ -37,14 +37,17 @@ public class Tree {
 
 		// While timer elapsed < 20 seconds (for now), do again. /1e3 comverts from ms
 		// to s
-		while ((currTime - startTime) / 1000 < 4) {
-			System.out.println((currTime - startTime) / 1000);
+		
+		while ((currTime - startTime) / 1000 < 20) {
+			
 			
 			expandFrontier();
 			
 			// Update time for evaluation in while loop
 			currTime = System.currentTimeMillis();
+			System.out.println("WORKING:"+(currTime - startTime) / 1000);
 		}
+		System.out.println("DONE");
 	}
 
 	public void getDepth() { // Q: this is checking the depth of the left-most branch, if this is a terminal
@@ -74,6 +77,7 @@ public class Tree {
 	public void expandFrontier() {
 		Node frontierNode = this.frontier.get(0);
 		List<Node> newFoundNodes = expandNode(frontierNode);
+		
 		this.foundNodes.add(frontierNode); // if errors, check these children
 		for( Node node : newFoundNodes) {
 			this.frontier.add(node);
@@ -85,22 +89,26 @@ public class Tree {
 	public List<Node> expandNode(Node node){
 		// the new nodes that are going to be added to the frontier list.
 		List<Node> discoveredNodes = new ArrayList<Node>();
-		
+
 		int[][] parentMoveList = node.getMoveList();
-		
 		// if depth is odd it is there move, else it is ours
 		int currentTurn = (this.getNodeDepth(node) % 2 == 1) ? opponent : player;
-		
+
 		// new AI that will be used to execute move list, then find new moves
 		RecursiveAI testBoard = new RecursiveAI(this.board);
 		
 		// makes moves to get to nodes board state (since we are storing moves to get there not the board itself)
-		for( int[] move : parentMoveList ) {
-			testBoard.moveQueen(move[0], move[1], move[2], move[3], player);
-			testBoard.throwSpear(move[4], move[5]);
+		
+		for (int[] move : parentMoveList) {
+			if (!(move[0] == 0 && move[1] == 0 && move[2] == 0 && move[3] == 0 && move[4] == 0 && move[5] == 0)) {
+				System.out.println(move[0] + "," + move[1]+"->"+move[2]+","+move[3]+" "+move[4]+" "+move[5]);
+				testBoard.moveQueen(move[0], move[1], move[2], move[3], player);
+				testBoard.throwSpear(move[4], move[5]);
+			}
 		}
 		// now testBoard contains the nodes board state, can find all moves from that board
 		List<int[]> possibleMoves = testBoard.getMovesArray(testBoard, currentTurn );
+		
 		
 		// Test each move, find their score then add them to a list to return back
 		for ( int[] newMove : possibleMoves) {
@@ -111,6 +119,7 @@ public class Tree {
 			Node newChild = new Node(parentMoveList, newMove, node, moveScore);
 			newChild.setChildren(null); // sets children list to null if leaf node
 			discoveredNodes.add(newChild);
+			//System.out.println(newChild.toString());
 		}
 		//updates children since no longer a leaf, used for searching
 		node.setChildren(discoveredNodes);
