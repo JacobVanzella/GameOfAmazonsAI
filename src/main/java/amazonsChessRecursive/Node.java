@@ -11,30 +11,34 @@ public class Node {
 	private int score;
 
 	public Node(int[][] prevMoves, int[] move, Node parentNode, int score) {
-		int depth = prevMoves.length + 1;
+		// int depth = prevMoves.length + 1;
 		this.parentNode = parentNode;
 		this.score = score;
-		//System.out.println(prevMoves.length);
-		if (prevMoves[0][0] == 0 && prevMoves[0][1] == 0 && prevMoves[0][2] == 0 && prevMoves[0][3] == 0
-				&& prevMoves[0][4] == 0 && prevMoves[0][5] == 0) {
-			this.moveList = new int[1][6];
-			for (int i = 0; i < 6; i++) {
-				this.moveList[0][i] = move[i];
-			}
+		// System.out.println(prevMoves.length);
+		if (parentNode == null) {
+			this.moveList = null;
 		} else {
-			this.moveList = new int[depth][6];
-			try {
-				for (int i = 0; i < depth - 1; i++) {
-					for (int j = 0; j < 6; j++) {
-						this.moveList[i][j] = prevMoves[i][j];
-					}
-				}
-
+			if (parentNode.getMoveList() == null) {
+				this.moveList = new int[1][6];
 				for (int i = 0; i < 6; i++) {
-					this.moveList[depth - 1][i] = move[i];
+					this.moveList[0][i] = move[i];
 				}
-			} catch (Exception e) {
-				System.out.println("Created rooter");
+			} else {
+				int depth = prevMoves.length + 1;
+				this.moveList = new int[depth][6];
+				try {
+					for (int i = 0; i < depth - 1; i++) {
+						for (int j = 0; j < 6; j++) {
+							this.moveList[i][j] = prevMoves[i][j];
+						}
+					}
+
+					for (int i = 0; i < 6; i++) {
+						this.moveList[depth - 1][i] = move[i];
+					}
+				} catch (Exception e) {
+					System.out.println("Created rooter");
+				}
 			}
 		}
 		// ArrayList<Node> children = new ArrayList<Node>();
@@ -53,7 +57,7 @@ public class Node {
 	}
 
 	public List<Node> getChildren() {
-		return this.getChildren();
+		return this.children;
 	}
 
 	public int[][] getMoveList() {

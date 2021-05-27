@@ -37,11 +37,15 @@ public class COSC322Test extends GamePlayer {
 		int[] currentMove = new int[6];
 		System.out.println(testBot.toString());
 		
-		Node root = new Node(prevMoves, currentMove, null, -1);
+		Node root = new Node(null, null, null, Integer.MIN_VALUE);
 		Tree tree = new Tree(root, testBot, 1);
 		//System.out.println(tree.foundNodes);
-		System.out.println("HERE"+tree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
-		
+		int[] bestMove = tree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		System.out.println("-------------SEARCH FINISHED----------------");
+		for( int i = 0; i < bestMove.length; i ++) {
+			System.out.print(bestMove[i] + " " );
+		}
+		System.out.println();
 		/*
 		 * for( int[] move : moves) { System.out.print("["); for( int i = 0; i <
 		 * move.length; i ++) { System.out.print(move[i] + ", " ); }
