@@ -168,8 +168,8 @@ public class Tree {
 
 				if (currentMove[0] >= beta) {
 					int[] returnVal = new int[7];
-					//returnVal[0] = max;
-					for (int i = 0; i < 7; i++) {
+					returnVal[0] = max;
+					for (int i = 1; i < 7; i++) {
 						returnVal[i] = currentMove[i];// - 1];
 					}
 					
@@ -200,14 +200,19 @@ public class Tree {
 
 				if (currentMove[0] <= alpha) {
 				
+					int[] returnVal = new int[7];
+					returnVal[0] = min;
+					for (int i = 1; i < 7; i++) {
+						returnVal[i] = currentMove[i];// - 1];
+					}
 					System.out.println("Case: min return");
 					for (int i = 0; i < 7; i++) {
-						System.out.print(currentMove[i] + " ");
+						System.out.print(returnVal[i] + " ");
 					}
 					System.out.println();
 					
 					
-					return currentMove;
+					return returnVal;
 				}
 
 				if (currentMove[0] < beta) {
