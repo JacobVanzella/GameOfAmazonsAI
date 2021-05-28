@@ -157,7 +157,7 @@ public class RecursiveAI extends Board {
 		// they play invalid moves (will break array)
 		List<List<Integer>> queenPos = new ArrayList<List<Integer>>();
 
-		System.out.println(currBoard.toString()); // for debugging
+		//System.out.println(currBoard.toString()); // for debugging
 
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
@@ -248,7 +248,24 @@ public class RecursiveAI extends Board {
 
 	public boolean wasValidMove(RecursiveAI currBoard, int opponent, int[] move) {
 		List<int[]> validMoves = currBoard.getMovesArray(currBoard, opponent);
-		if (validMoves.contains(move) == true) {
+		for( int[] moveN : validMoves) {
+			System.out.print("[");
+			for( int i = 0; i < moveN.length; i++) {
+				System.out.print(moveN[i] + " ");
+			}
+			System.out.println("]");
+		}
+		int prevRowAdjusted = move[0] - 1;
+		int prevColAdjusted = move[1] - 1;
+		int nextRowAdjusted = move[2] - 1;
+		int nextColAdjusted = move[3] - 1;
+		int spearRowAdjusted = move[4] - 1;
+		int spearColAdjusted = move[5] - 1;
+		int[] adjMove = {prevRowAdjusted, prevColAdjusted, nextRowAdjusted, nextColAdjusted, spearRowAdjusted, spearColAdjusted};
+		for( int i = 0; i < adjMove.length; i++) {
+			System.out.print(adjMove[i] + " ");
+		}
+		if (validMoves.contains(adjMove) == true) {
 			return true;
 		} else {
 			return false;

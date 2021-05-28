@@ -202,7 +202,7 @@ public class COSC322Test extends GamePlayer {
 					arrayTestBoard[k][i % 10] = testBoard.get(i);
 				}
 				RecursiveAI testOpponentMove = new RecursiveAI(arrayTestBoard);
-				
+				testOpponentMove.printBoard();
 				int[] opponentMove = new int[] {queenPosCurr.get(0), queenPosCurr.get(1), queenPosNext.get(0), queenPosNext.get(1), arrowPos.get(0), arrowPos.get(1)};
 				if( testOpponentMove.wasValidMove(testOpponentMove, (player == 1) ? 2 : 1, opponentMove) == false) {
 					System.out.println("Opponent made an invalid move");
@@ -267,6 +267,7 @@ public class COSC322Test extends GamePlayer {
 					gameState.set(queenGoesTo.get(0) * 11 + queenGoesTo.get(1), player);
 					gameState.set(spearGoesTo.get(0) * 11 + spearGoesTo.get(1), 3);
 					this.gameState = gameState;
+					System.out.println(tree.timeElapsed());
 				} else {
 					//If there are no moves avaliable, move to a random spot on the board and throw a spear
 					//to a random spot, hope the opponent is not checking valid moves.

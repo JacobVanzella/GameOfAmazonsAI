@@ -14,6 +14,8 @@ public class Tree {
 	private int[][] board = new int[10][10];
 	int player = 0;
 	int opponent = 0;
+	Long secondsElapsed = Long.MIN_VALUE;
+	Long startTime = Long.MIN_VALUE;
 
 	public Tree(RecursiveAI currBoard, int player) {
 		this.root = new Node(null, null, null, Integer.MIN_VALUE);
@@ -23,7 +25,7 @@ public class Tree {
 		frontier.add(root);
 
 		// Initializes timer
-		Long startTime = System.currentTimeMillis();
+		this.startTime = System.currentTimeMillis();
 
 		// Stores version of the board locally
 		for (int i = 0; i < 10; i++) {
@@ -38,13 +40,13 @@ public class Tree {
 		// While timer elapsed < 20 seconds (for now), do again. /1e3 comverts from ms
 		// to s
 
-		while ((currTime - startTime) / 1000 < 30) {
+		while (this.secondsElapsed < 30) {
 
 			expandFrontier();
 
 			// Update time for evaluation in while loop
 			currTime = System.currentTimeMillis();
-			System.out.println("WORKING:" + (currTime - startTime) / 1000);
+			this.secondsElapsed = (currTime - this.startTime) / 1000;
 		}
 		System.out.println("DONE");
 	}
@@ -100,8 +102,8 @@ public class Tree {
 		// there not the board itself)
 		if (parentMoveList != null) {
 			for (int[] move : parentMoveList) {
-				System.out.println(
-						move[0] + "," + move[1] + "->" + move[2] + "," + move[3] + " Spear:" + move[4] + "," + move[5]);
+				//System.out.println(
+				//		move[0] + "," + move[1] + "->" + move[2] + "," + move[3] + " Spear:" + move[4] + "," + move[5]);
 				testBoard.moveQueen(move[0], move[1], move[2], move[3], player);
 				testBoard.throwSpear(move[4], move[5]);
 			}
@@ -128,6 +130,11 @@ public class Tree {
 	public int[] getLastMove(Node node){
 		return node.getMoveList()[getNodeDepth(node) - 1];
 	}
+	public Long timeElapsed() {
+		Long currTime = System.currentTimeMillis();
+		this.secondsElapsed = (currTime - this.startTime ) / 1000;
+		return this.secondsElapsed;
+	}
 	
 	public Tree(List<Node> nodes) {
 		for ( Node node : nodes) {
@@ -147,12 +154,6 @@ public class Tree {
 			for (int i = 1; i < 7; i++) {
 				returnVal[i] = currentMove[i - 1];
 			}
-
-			System.out.println("Case: terminal");
-			for (int i = 0; i < 7; i++) {
-				System.out.print(returnVal[i] + " ");
-			}
-			System.out.println();
 
 			return returnVal;
 		} 
