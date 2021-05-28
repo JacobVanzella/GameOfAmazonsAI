@@ -39,13 +39,13 @@ public class RecursiveAI extends Board {
 		testMoveAI.moveQueen(move[0], move[1], move[2], move[3], player);
 
 		int opponent = (player == 1) ? 2 : 1;
-		int playerMoves = getMoves(testMoveAI, player).size();
-		int opponentMoves = getMoves(testMoveAI, opponent).size();
+		int playerMoves = getMovesArray(testMoveAI, player).size();
+		int opponentMoves = getMovesArray(testMoveAI, opponent).size();
 		int score = playerMoves - opponentMoves;
 
 		return score;
 	}
-
+/*
 	public List<List<Integer>> getMoves(RecursiveAI currBoard, int player) {
 		// The nested List has form (prevRow, prevCol, nextRow, nextCol) for available
 		// moves
@@ -146,6 +146,7 @@ public class RecursiveAI extends Board {
 		}
 		return moves;
 	}
+	*/
 
 	public List<int[]> getMovesArray(RecursiveAI currBoard, int player) {
 		// The nested List has form (prevRow, prevCol, nextRow, nextCol) for available

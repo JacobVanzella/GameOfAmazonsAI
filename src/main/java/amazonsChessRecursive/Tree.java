@@ -7,7 +7,7 @@ import amazonsChess.Board;
 import amazonsChess.RecursiveAI;
 
 public class Tree {
-	private Node root;
+	public Node root;
 	private int depth;
 	private ArrayList<Node> frontier = new ArrayList<Node>();
 	public ArrayList<Node> foundNodes = new ArrayList<Node>();
@@ -15,8 +15,8 @@ public class Tree {
 	int player = 0;
 	int opponent = 0;
 
-	public Tree(Node root, RecursiveAI currBoard, int player) {
-		this.root = root;
+	public Tree(RecursiveAI currBoard, int player) {
+		this.root = new Node(null, null, null, Integer.MIN_VALUE);
 		this.player = player;
 		this.opponent = (this.player == 1) ? 2 : 1;
 
@@ -117,7 +117,7 @@ public class Tree {
 			testMove.throwSpear(newMove[4], newMove[5]);
 			int moveScore = testMove.scoreMove(testMove.getBoard(), newMove, player);
 			Node newChild = new Node(parentMoveList, newMove, node, moveScore);
-			newChild.setChildren(null); // sets children list to null if leaf node
+			//newChild.setChildren(null); // sets children list to null if leaf node
 			discoveredNodes.add(newChild);
 			//System.out.println(newChild.toString());
 		}
@@ -136,7 +136,7 @@ public class Tree {
 	}
 
 	public int[] alphaBeta(Node node, int alpha, int beta) {
-		int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+		//int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
 		
 		// Handle terminal case (leaf of tree)
 		if (node.getChildren().isEmpty()) {
@@ -159,68 +159,71 @@ public class Tree {
 		int[] currentMove = new int[7];
 
 		if (this.getNodeDepth(node) % 2 == 0) { // Max turn
+			int[] max = new int[7]; 
+			max[0] = Integer.MIN_VALUE;
 			for (Node child : node.getChildren()) {
+				int[] childMove = getLastMove(child);
 				currentMove = alphaBeta(child, alpha, beta);
 				
-				if (currentMove[0] > max) {
-					max = currentMove[0];
-				}
-
-				if (currentMove[0] >= beta) {
-					int[] returnVal = new int[7];
-					returnVal[0] = max;
-					for (int i = 1; i < 7; i++) {
-						returnVal[i] = currentMove[i];// - 1];
+				//max = Math.max(max.score, currentMove.score);
+				if( currentMove[0] > max[0]) {
+					max[0] = currentMove[0];
+					for(int i = 0; i < 6; i++) {
+						max[i+1]=childMove[i];
 					}
-					
-					System.out.println("Case: Max return");
-					for (int i = 0; i < 7; i++) {
-						System.out.print(returnVal[i] + " ");
-					}
-					System.out.println();
-					
-					
-					return returnVal;
 				}
-
-				if (currentMove[0] > alpha) {
-					alpha = currentMove[0];
+				
+				//alpha = Math.max(max.score, alpha);
+				if ( max[0] > alpha) {
+					alpha = max[0];
+				}
+				
+				// if beta <= alpha can prune branch
+				if( beta <= alpha) {
+					break;
 				}
 			}
 			
-			return currentMove;
+			// return max - which is the move array
+			int[] returnValue = new int[7];
+			for(int i = 0; i < 7; i ++) {
+				returnValue[i] = max[i];
+			}
+			return returnValue;
 			
 		} else { // Min turn
+			int[] min = new int[7];
+			min[0] = Integer.MAX_VALUE;
 			for (Node child : node.getChildren()) {
+				int[] childMove = getLastMove(child);
 				currentMove = alphaBeta(child, alpha, beta);
-
-				if (currentMove[0] < min) {
-					min = currentMove[0];
-				}
-
-				if (currentMove[0] <= alpha) {
 				
-					int[] returnVal = new int[7];
-					returnVal[0] = min;
-					for (int i = 1; i < 7; i++) {
-						returnVal[i] = currentMove[i];// - 1];
+				//min = Math.min( min.score, currentMove.score);
+				if (currentMove[0] < min[0]) {
+					min[0] = currentMove[0];
+					for( int i = 0; i < 6; i++) {
+						min[i+1] = childMove[i];
 					}
-					System.out.println("Case: min return");
-					for (int i = 0; i < 7; i++) {
-						System.out.print(returnVal[i] + " ");
-					}
-					System.out.println();
-					
-					
-					return returnVal;
 				}
-
-				if (currentMove[0] < beta) {
-					beta = currentMove[0];
+				
+				// beta = Math.min( min, beta)
+				if ( min[0] < beta ) {
+					beta = min[0];
 				}
+				
+				// if beta <= alpha can prune branch
+				if( beta <= alpha) {
+					break;
+				}
+				
 			}
 			
-			return currentMove;
+			// return min - which is the move array
+			int[] returnValue = new int[7];
+			for( int i = 0; i < 7; i ++) {
+				returnValue[i] = min[i];
+			}
+			return returnValue;
 		}
 	}
 }

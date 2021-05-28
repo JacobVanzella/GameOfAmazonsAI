@@ -32,13 +32,14 @@ public class COSC322Test extends GamePlayer {
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		
+		/*
 		Node root = new Node(null, null, null, Integer.MIN_VALUE);
 		int[] move1 = {0, 0, 0, 0, 0, 1};
-		Node node1 = new Node(null, move1, root, 2);
+		Node node1 = new Node(null, move1, root, 10);
 		int[] move2 = {0, 0, 0, 0, 0, 2};
-		Node node2 = new Node(null, move2, root, 1);
+		Node node2 = new Node(null, move2, root, 9);
 		int[] move3 = {0, 0, 0, 0, 0, 3};
-		Node node3 = new Node(null, move3, root, 4);
+		Node node3 = new Node(null, move3, root, 7);
 		ArrayList<Node> depth1 = new ArrayList<Node>();
 		depth1.add(node1);
 		depth1.add(node2);
@@ -99,30 +100,24 @@ public class COSC322Test extends GamePlayer {
 		for( int i = 0; i < bestMove.length; i ++) {
 			System.out.print(bestMove[i] + " ");
 		}
+		*/
 		
 		
 		
 		/*
 		RecursiveAI testBot = new RecursiveAI();
-		int[][] prevMoves = new int[1][6];
-		int[] currentMove = new int[6];
+		
 		System.out.println(testBot.toString());
 		
-		Node root = new Node(null, null, null, Integer.MIN_VALUE);
-		Tree tree = new Tree(root, testBot, 1);
-		//System.out.println(tree.foundNodes);
-		int[] bestMove = tree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		Tree tree = new Tree(testBot, 1);
+		
+		int[] bestMove = tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		System.out.println("-------------SEARCH FINISHED----------------");
 		for( int i = 0; i < bestMove.length; i ++) {
 			System.out.print(bestMove[i] + " " );
 		}
 		System.out.println();
-		
-		/*
-		 * for( int[] move : moves) { System.out.print("["); for( int i = 0; i <
-		 * move.length; i ++) { System.out.print(move[i] + ", " ); }
-		 * System.out.println("]"); }
-		 
+		*/
 
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -134,7 +129,7 @@ public class COSC322Test extends GamePlayer {
 				}
 			});
 		}
-		*/
+		
 	}
 
 	// Any name and passwd
@@ -239,20 +234,17 @@ public class COSC322Test extends GamePlayer {
 				
 				RecursiveAI ai = new RecursiveAI(arrayBoard);
 				ai.printBoard();
-				System.out.println("PLAYER: " + player);
-				List<List<Integer>> moves = ai.getMoves(ai, player);
+				Tree tree = new Tree(ai, player);
+				int[] bestMove = tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
 				
-				System.out.println("Currn List: "+moves);
-				if (moves.size() != 0) {
-					int randomIndex = (int) (Math.random() * moves.size());
-					List<Integer> randomMove = moves.get(randomIndex);
-					System.out.println(randomMove);
-					int prevRow = randomMove.get(0);
-					int prevCol = randomMove.get(1);
-					int nextRow = randomMove.get(2);
-					int nextCol = randomMove.get(3);
-					int spearRow = randomMove.get(4);
-					int spearCol = randomMove.get(5);
+				if (true) {
+					System.out.println();
+					int prevRow = bestMove[1];
+					int prevCol = bestMove[2];
+					int nextRow = bestMove[3];
+					int nextCol = bestMove[4];
+					int spearRow = bestMove[5];
+					int spearCol = bestMove[6];
 					int prevRowAdjusted = prevRow + 1;
 					int prevColAdjusted = prevCol + 1;
 					int nextRowAdjusted = nextRow + 1;
