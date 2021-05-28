@@ -16,6 +16,9 @@ public class Tree {
 	int opponent = 0;
 	Long secondsElapsed = Long.MIN_VALUE;
 	Long startTime = Long.MIN_VALUE;
+	boolean keepGoing = true;
+	int runTime = 0;
+	boolean validMove = true;
 
 	public Tree(RecursiveAI currBoard, int player) {
 		this.root = new Node(null, null, null, Integer.MIN_VALUE);
@@ -34,19 +37,17 @@ public class Tree {
 			}
 		}
 
-		// To be updated in the while loop
-		Long currTime = System.currentTimeMillis();
+		// set amount of time to run the AI
+		// runTime only controls time to generate the nodes
+		// therefore want to leave a 2-3 seconds for the alpha-beta search.
+		this.runTime = 1;
 
-		// While timer elapsed < 20 seconds (for now), do again. /1e3 comverts from ms
-		// to s
+		// will keep going until expandNode runs out of alloted time
+		while (this.keepGoing) {
 
-		while (this.secondsElapsed < 30) {
-
+			// expandFrontier calls expandNode which will break when run out of time
 			expandFrontier();
 
-			// Update time for evaluation in while loop
-			currTime = System.currentTimeMillis();
-			this.secondsElapsed = (currTime - this.startTime) / 1000;
 		}
 		System.out.println("DONE");
 	}
@@ -75,16 +76,24 @@ public class Tree {
 		}
 	}
 
+	public boolean validMove() {
+		return this.validMove;
+	}
+
 	public void expandFrontier() {
-		Node frontierNode = this.frontier.get(0);
-		List<Node> newFoundNodes = expandNode(frontierNode);
+		if (frontier.size() == 0) {
+			this.validMove = false;
+			this.keepGoing = false;
+		} else {
+			Node frontierNode = this.frontier.get(0);
+			List<Node> newFoundNodes = expandNode(frontierNode);
 
-		this.foundNodes.add(frontierNode); // if errors, check these children
-		for (Node node : newFoundNodes) {
-			this.frontier.add(node);
+			this.foundNodes.add(frontierNode); // if errors, check these children
+			for (Node node : newFoundNodes) {
+				this.frontier.add(node);
+			}
+			this.frontier.remove(0);
 		}
-		this.frontier.remove(0);
-
 	}
 
 	public List<Node> expandNode(Node node) {
@@ -102,8 +111,9 @@ public class Tree {
 		// there not the board itself)
 		if (parentMoveList != null) {
 			for (int[] move : parentMoveList) {
-				//System.out.println(
-				//		move[0] + "," + move[1] + "->" + move[2] + "," + move[3] + " Spear:" + move[4] + "," + move[5]);
+				// System.out.println(
+				// move[0] + "," + move[1] + "->" + move[2] + "," + move[3] + " Spear:" +
+				// move[4] + "," + move[5]);
 				testBoard.moveQueen(move[0], move[1], move[2], move[3], player);
 				testBoard.throwSpear(move[4], move[5]);
 			}
@@ -114,37 +124,52 @@ public class Tree {
 
 		// Test each move, find their score then add them to a list to return back
 		for (int[] newMove : possibleMoves) {
+
+			// test if enough time to check child, if there is not, break out of loop.
+			Long currTime = System.currentTimeMillis();
+			this.secondsElapsed = (currTime - this.startTime) / 1000;
+			if (this.secondsElapsed > this.runTime) {
+				this.keepGoing = false;
+				break;
+			}
+
 			RecursiveAI testMove = new RecursiveAI(testBoard.getBoard());
 			testMove.moveQueen(newMove[0], newMove[1], newMove[2], newMove[3], currentTurn);
 			testMove.throwSpear(newMove[4], newMove[5]);
 			int moveScore = testMove.scoreMove(testMove.getBoard(), newMove, player);
 			Node newChild = new Node(parentMoveList, newMove, node, moveScore);
-			//newChild.setChildren(null); // sets children list to null if leaf node
+			// newChild.setChildren(null); // sets children list to null if leaf node
 			discoveredNodes.add(newChild);
-			//System.out.println(newChild.toString());
+			// System.out.println(newChild.toString());
 		}
 		// updates children since no longer a leaf, used for searching
 		node.setChildren(discoveredNodes);
 		return discoveredNodes;
 	}
-	public int[] getLastMove(Node node){
-		return node.getMoveList()[getNodeDepth(node) - 1];
+
+	public int[] getLastMove(Node node) {
+		if (node.getMoveList() != null) {
+			return node.getMoveList()[getNodeDepth(node) - 1];
+		} else {
+			return new int[6];
+		}
 	}
+
 	public Long timeElapsed() {
 		Long currTime = System.currentTimeMillis();
-		this.secondsElapsed = (currTime - this.startTime ) / 1000;
+		this.secondsElapsed = (currTime - this.startTime) / 1000;
 		return this.secondsElapsed;
 	}
-	
+
 	public Tree(List<Node> nodes) {
-		for ( Node node : nodes) {
+		for (Node node : nodes) {
 			foundNodes.add(node);
 		}
 	}
 
 	public int[] alphaBeta(Node node, int alpha, int beta) {
-		//int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
-		
+		// int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+
 		// Handle terminal case (leaf of tree)
 		if (node.getChildren().isEmpty()) {
 			int[] currentMove = new int[6];
@@ -156,72 +181,72 @@ public class Tree {
 			}
 
 			return returnVal;
-		} 
+		}
 		int[] currentMove = new int[7];
 
 		if (this.getNodeDepth(node) % 2 == 0) { // Max turn
-			int[] max = new int[7]; 
+			int[] max = new int[7];
 			max[0] = Integer.MIN_VALUE;
 			for (Node child : node.getChildren()) {
 				int[] childMove = getLastMove(child);
 				currentMove = alphaBeta(child, alpha, beta);
-				
-				//max = Math.max(max.score, currentMove.score);
-				if( currentMove[0] > max[0]) {
+
+				// max = Math.max(max.score, currentMove.score);
+				if (currentMove[0] > max[0]) {
 					max[0] = currentMove[0];
-					for(int i = 0; i < 6; i++) {
-						max[i+1]=childMove[i];
+					for (int i = 0; i < 6; i++) {
+						max[i + 1] = childMove[i];
 					}
 				}
-				
-				//alpha = Math.max(max.score, alpha);
-				if ( max[0] > alpha) {
+
+				// alpha = Math.max(max.score, alpha);
+				if (max[0] > alpha) {
 					alpha = max[0];
 				}
-				
+
 				// if beta <= alpha can prune branch
-				if( beta <= alpha) {
+				if (beta <= alpha) {
 					break;
 				}
 			}
-			
+
 			// return max - which is the move array
 			int[] returnValue = new int[7];
-			for(int i = 0; i < 7; i ++) {
+			for (int i = 0; i < 7; i++) {
 				returnValue[i] = max[i];
 			}
 			return returnValue;
-			
+
 		} else { // Min turn
 			int[] min = new int[7];
 			min[0] = Integer.MAX_VALUE;
 			for (Node child : node.getChildren()) {
 				int[] childMove = getLastMove(child);
 				currentMove = alphaBeta(child, alpha, beta);
-				
-				//min = Math.min( min.score, currentMove.score);
+
+				// min = Math.min( min.score, currentMove.score);
 				if (currentMove[0] < min[0]) {
 					min[0] = currentMove[0];
-					for( int i = 0; i < 6; i++) {
-						min[i+1] = childMove[i];
+					for (int i = 0; i < 6; i++) {
+						min[i + 1] = childMove[i];
 					}
 				}
-				
+
 				// beta = Math.min( min, beta)
-				if ( min[0] < beta ) {
+				if (min[0] < beta) {
 					beta = min[0];
 				}
-				
+
 				// if beta <= alpha can prune branch
-				if( beta <= alpha) {
+				if (beta <= alpha) {
 					break;
 				}
-				
+
 			}
-			
+
 			// return min - which is the move array
 			int[] returnValue = new int[7];
-			for( int i = 0; i < 7; i ++) {
+			for (int i = 0; i < 7; i++) {
 				returnValue[i] = min[i];
 			}
 			return returnValue;

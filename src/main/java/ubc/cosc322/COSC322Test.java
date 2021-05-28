@@ -117,15 +117,10 @@ public class COSC322Test extends GamePlayer {
 			System.out.print(bestMove[i] + " " );
 		}
 		System.out.println();
+		System.out.println(tree.timeElapsed());
 		*/
-		
-		/*
-		 * RecursiveAI testBot = new RecursiveAI(); List<int[]> moves =
-		 * testBot.getMovesArray(testBot, 2); for( int[] move : moves) {
-		 * System.out.print("["); for(int i = 0; i < move.length; i ++) {
-		 * System.out.print(move[i]+" "); } System.out.println("]"); }
-		 */
 
+		///*
 		if (player.getGameGUI() == null) {
 			player.Go();
 		} else {
@@ -136,7 +131,7 @@ public class COSC322Test extends GamePlayer {
 				}
 			});
 		}
-		
+		//*/
 	}
 
 	// Any name and passwd
@@ -215,7 +210,7 @@ public class COSC322Test extends GamePlayer {
 					System.out.println("Opponent made an invalid move");
 					this.gameClient.sendTextMessage("Opponent made an invalid move");
 				}else {
-					System.out.println("They good");
+					System.out.println("Opponent made a valid move");
 				}
 				// End valid move checker
 				
@@ -245,8 +240,7 @@ public class COSC322Test extends GamePlayer {
 				ai.printBoard();
 				Tree tree = new Tree(ai, player);
 				int[] bestMove = tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-				
-				if (true) {
+				if ( tree.validMove() == true) {
 					System.out.println();
 					int prevRow = bestMove[1];
 					int prevCol = bestMove[2];
@@ -280,20 +274,21 @@ public class COSC322Test extends GamePlayer {
 				} else {
 					//If there are no moves avaliable, move to a random spot on the board and throw a spear
 					//to a random spot, hope the opponent is not checking valid moves.
+					System.out.println("Random Move Time");
 					int dummyQueenRow = 1;
 					int dummyQueenCol = 1;
 					for ( int i = 0 ; i < 10; i ++) {
 						for( int ii = 0; ii < 10; ii ++) {
 							if(ai.getTile(i, ii) == player) {
-								dummyQueenRow = i;
-								dummyQueenCol = ii;
+								dummyQueenRow = i + 1;
+								dummyQueenCol = ii + 1;
 							}
 						}
 					}
-					int dummyToRow = (int) (Math.random() * 10 + 1);
-					int dummyToCol = (int) (Math.random() * 10 + 1);
-					int dummySpearRow = (int) (Math.random() * 10 + 1);
-					int dummySpearCol = (int) (Math.random() * 10 + 1);
+					int dummyToRow = (int) (Math.random() * 9 ) + 1;
+					int dummyToCol = (int) (Math.random() * 9 ) + 1;
+					int dummySpearRow = (int) (Math.random() * 9 ) + 1;
+					int dummySpearCol = (int) (Math.random() * 9 ) + 1;
 					ArrayList<Integer> dummyQueenLoc = new ArrayList<Integer>();
 					dummyQueenLoc.add(dummyQueenRow);
 					dummyQueenLoc.add(dummyQueenCol);
