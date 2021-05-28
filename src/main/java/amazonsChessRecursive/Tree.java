@@ -40,7 +40,7 @@ public class Tree {
 		// set amount of time to run the AI
 		// runTime only controls time to generate the nodes
 		// therefore want to leave a 2-3 seconds for the alpha-beta search.
-		this.runTime = 1;
+		this.runTime = 28;
 
 		// will keep going until expandNode runs out of alloted time
 		while (this.keepGoing) {
