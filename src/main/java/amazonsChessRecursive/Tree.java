@@ -38,7 +38,7 @@ public class Tree {
 		// While timer elapsed < 20 seconds (for now), do again. /1e3 comverts from ms
 		// to s
 
-		while ((currTime - startTime) / 1000 < 20) {
+		while ((currTime - startTime) / 1000 < 30) {
 
 			expandFrontier();
 
@@ -119,7 +119,7 @@ public class Tree {
 			Node newChild = new Node(parentMoveList, newMove, node, moveScore);
 			newChild.setChildren(null); // sets children list to null if leaf node
 			discoveredNodes.add(newChild);
-			System.out.println(newChild.toString());
+			//System.out.println(newChild.toString());
 		}
 		// updates children since no longer a leaf, used for searching
 		node.setChildren(discoveredNodes);
@@ -128,11 +128,17 @@ public class Tree {
 	public int[] getLastMove(Node node){
 		return node.getMoveList()[getNodeDepth(node) - 1];
 	}
+	
+	public Tree(List<Node> nodes) {
+		for ( Node node : nodes) {
+			foundNodes.add(node);
+		}
+	}
 
 	public int[] alphaBeta(Node node, int alpha, int beta) {
 		int[] currentMove = new int[6];// = currentNode.getLastMove();
 		int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
-
+		
 		// Handle terminal case (leaf of tree)
 		if (node.getChildren() == null) {
 			int[] returnVal = new int[7];
@@ -161,9 +167,9 @@ public class Tree {
 
 				if (node.getScore() >= beta) {
 					int[] returnVal = new int[7];
-					returnVal[0] = max;
-					for (int i = 1; i < 7; i++) {
-						returnVal[i] = currentMove[i - 1];
+					//returnVal[0] = max;
+					for (int i = 0; i < 7; i++) {
+						returnVal[i] = currentMove[i];// - 1];
 					}
 
 					return returnVal;
@@ -175,8 +181,8 @@ public class Tree {
 			}
 
 			int[] returnVal = new int[7];
-			returnVal[0] = max;
-			for (int i = 1; i < 7; i++) {
+			//returnVal[0] = max;
+			for (int i = 0; i < 7; i++) {
 				returnVal[i] = currentMove[i];
 			}
 
@@ -191,8 +197,8 @@ public class Tree {
 
 				if (node.getScore() <= alpha) {
 					int[] returnVal = new int[7];
-					returnVal[0] = min;
-					for (int i = 1; i < 7; i++) {
+					//returnVal[0] = min;
+					for (int i = 0; i < 7; i++) {
 						returnVal[i] = currentMove[i];
 					}
 
@@ -204,13 +210,6 @@ public class Tree {
 				}
 			}
 			
-			System.out.print("CURRENTMOVE:");
-			for( int i = 0; i < currentMove.length; i++) {
-				System.out.print(currentMove[i] + " ");
-			}
-			System.out.println("-");
-
-
 			int[] returnVal = new int[7];
 			returnVal[0] = min;
 			for (int i = 1; i < 7; i++) {
