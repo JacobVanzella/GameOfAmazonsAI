@@ -214,11 +214,11 @@ public class RecursiveAI extends Board {
 											while (spearCanMove) {
 												spearRow = nextRow + k * spearDist;
 												spearCol = nextCol + r * spearDist;
-												// .println(currRow + " " + currCol + " " + nextRow + " " +
-												// nextCol);
-												// .println(spearRow + " " + spearCol);
+												 //System.out.println(currRow + " " + currCol + " " + nextRow + " " +
+												 //nextCol);
+												 //System.out.println(spearRow + " " + spearCol);
 												if (testboard.getTile(spearRow, spearCol) == EMPTY) {
-													// .println(testboard.toString());
+													 //System.out.println(testboard.toString());
 													int[] move = new int[] { currRow, currCol, nextRow, nextCol,
 															spearRow, spearCol };
 													moves.add(move);
@@ -248,13 +248,7 @@ public class RecursiveAI extends Board {
 
 	public boolean wasValidMove(RecursiveAI currBoard, int opponent, int[] move) {
 		List<int[]> validMoves = currBoard.getMovesArray(currBoard, opponent);
-		for( int[] moveN : validMoves) {
-			System.out.print("[");
-			for( int i = 0; i < moveN.length; i++) {
-				System.out.print(moveN[i] + " ");
-			}
-			System.out.println("]");
-		}
+		
 		int prevRowAdjusted = move[0] - 1;
 		int prevColAdjusted = move[1] - 1;
 		int nextRowAdjusted = move[2] - 1;
@@ -262,13 +256,17 @@ public class RecursiveAI extends Board {
 		int spearRowAdjusted = move[4] - 1;
 		int spearColAdjusted = move[5] - 1;
 		int[] adjMove = {prevRowAdjusted, prevColAdjusted, nextRowAdjusted, nextColAdjusted, spearRowAdjusted, spearColAdjusted};
-		for( int i = 0; i < adjMove.length; i++) {
-			System.out.print(adjMove[i] + " ");
+		for ( int[] moveN : validMoves) {
+			boolean contains = true;
+			for( int i = 0; i < move.length; i ++) {
+				if( moveN[i] != adjMove[i]) {
+					contains = false;
+				}
+				if( i == move.length - 1 && contains == true) {
+					return true;
+				}
+			}
 		}
-		if (validMoves.contains(adjMove) == true) {
-			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 }

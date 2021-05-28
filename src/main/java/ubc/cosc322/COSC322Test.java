@@ -118,6 +118,13 @@ public class COSC322Test extends GamePlayer {
 		}
 		System.out.println();
 		*/
+		
+		/*
+		 * RecursiveAI testBot = new RecursiveAI(); List<int[]> moves =
+		 * testBot.getMovesArray(testBot, 2); for( int[] move : moves) {
+		 * System.out.print("["); for(int i = 0; i < move.length; i ++) {
+		 * System.out.print(move[i]+" "); } System.out.println("]"); }
+		 */
 
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -207,6 +214,8 @@ public class COSC322Test extends GamePlayer {
 				if( testOpponentMove.wasValidMove(testOpponentMove, (player == 1) ? 2 : 1, opponentMove) == false) {
 					System.out.println("Opponent made an invalid move");
 					this.gameClient.sendTextMessage("Opponent made an invalid move");
+				}else {
+					System.out.println("They good");
 				}
 				// End valid move checker
 				
