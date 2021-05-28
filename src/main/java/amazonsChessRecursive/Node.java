@@ -6,7 +6,7 @@ import java.util.List;
 public class Node {
 
 	private Node parentNode;
-	private List<Node> children;
+	private List<Node> children = new ArrayList<Node>();
 	private int[][] moveList;
 	private int score;
 
@@ -53,7 +53,7 @@ public class Node {
 	}
 
 	public void setChildren(List<Node> children) {
-		this.children = children;
+		this.children.addAll(children);
 	}
 
 	public List<Node> getChildren() {

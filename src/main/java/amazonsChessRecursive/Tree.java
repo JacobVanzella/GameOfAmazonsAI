@@ -136,11 +136,11 @@ public class Tree {
 	}
 
 	public int[] alphaBeta(Node node, int alpha, int beta) {
-		int[] currentMove = new int[6];// = currentNode.getLastMove();
 		int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
 		
 		// Handle terminal case (leaf of tree)
-		if (node.getChildren() == null) {
+		if (node.getChildren().isEmpty()) {
+			int[] currentMove = new int[6];
 			int[] returnVal = new int[7];
 			returnVal[0] = node.getScore();
 			currentMove = getLastMove(node);
@@ -155,68 +155,67 @@ public class Tree {
 			System.out.println();
 
 			return returnVal;
-		}
+		} 
+		int[] currentMove = new int[7];
 
 		if (this.getNodeDepth(node) % 2 == 0) { // Max turn
 			for (Node child : node.getChildren()) {
 				currentMove = alphaBeta(child, alpha, beta);
 				
-				if (node.getScore() > max) {
-					max = node.getScore();
+				if (currentMove[0] > max) {
+					max = currentMove[0];
 				}
 
-				if (node.getScore() >= beta) {
+				if (currentMove[0] >= beta) {
 					int[] returnVal = new int[7];
 					//returnVal[0] = max;
 					for (int i = 0; i < 7; i++) {
 						returnVal[i] = currentMove[i];// - 1];
 					}
-
+					
+					System.out.println("Case: Max return");
+					for (int i = 0; i < 7; i++) {
+						System.out.print(returnVal[i] + " ");
+					}
+					System.out.println();
+					
+					
 					return returnVal;
 				}
 
-				if (node.getScore() > alpha) {
-					alpha = node.getScore();
+				if (currentMove[0] > alpha) {
+					alpha = currentMove[0];
 				}
 			}
-
-			int[] returnVal = new int[7];
-			//returnVal[0] = max;
-			for (int i = 0; i < 7; i++) {
-				returnVal[i] = currentMove[i];
-			}
-
-			return returnVal;
+			
+			return currentMove;
+			
 		} else { // Min turn
 			for (Node child : node.getChildren()) {
 				currentMove = alphaBeta(child, alpha, beta);
 
-				if (node.getScore() < min) {
-					min = node.getScore();
+				if (currentMove[0] < min) {
+					min = currentMove[0];
 				}
 
-				if (node.getScore() <= alpha) {
-					int[] returnVal = new int[7];
-					//returnVal[0] = min;
+				if (currentMove[0] <= alpha) {
+				
+					System.out.println("Case: min return");
 					for (int i = 0; i < 7; i++) {
-						returnVal[i] = currentMove[i];
+						System.out.print(currentMove[i] + " ");
 					}
-
-					return returnVal;
+					System.out.println();
+					
+					
+					return currentMove;
 				}
 
-				if (node.getScore() < beta) {
-					beta = node.getScore();
+				if (currentMove[0] < beta) {
+					beta = currentMove[0];
 				}
 			}
 			
-			int[] returnVal = new int[7];
-			returnVal[0] = min;
-			for (int i = 1; i < 7; i++) {
-				returnVal[i] = currentMove[i - 1];
-			}
-
-			return returnVal;
+			return currentMove;
 		}
 	}
 }
