@@ -3,13 +3,6 @@ package amazonsChess;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO Consider creating a Move class to simplify code
-// Constructors
-// public class Move(){}
-// public class Move(row, col){}
-// public class Move(queenCurrRow, queenCurrCol, queenNextRow, queenNextCol)
-// public class Move(queenCurrRow, queenCurrCol, queenNextRow, queenNextCol, spearRow, spearCol){}
-
 public class RecursiveAI extends Board {
 
 	RecursiveAI parent = null;
