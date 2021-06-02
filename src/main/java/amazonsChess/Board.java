@@ -13,21 +13,20 @@ public class Board {
 
 	public Board() {
 		board = new int[][] {
-			{ 0, 0, 0, W, 0, 0, W, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ W, 0, 0, 0, 0, 0, 0, 0, 0, W },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ B, 0, 0, 0, 0, 0, 0, 0, 0, B },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, B, 0, 0, B, 0, 0, 0 },
-			};
+				{ 0, 0, 0, W, 0, 0, W, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ W, 0, 0, 0, 0, 0, 0, 0, 0, W },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ B, 0, 0, 0, 0, 0, 0, 0, 0, B },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, B, 0, 0, B, 0, 0, 0 }, };
 	}
 
 	public Board(int[][] source) {
-		//this();
+		// this();
 		for (int i = 0; i < 10; i++)
 			for (int j = 0; j < 10; j++) {
 				board[i][j] = source[i][j];
@@ -36,8 +35,8 @@ public class Board {
 
 	public int[][] getBoard() {
 		int[][] tempBoard = new int[10][10];
-		for( int i = 0; i < 10; i ++) {
-			for( int j = 0; j < 10; j++) {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
 				tempBoard[j][i] = this.board[j][i];
 			}
 		}
@@ -85,47 +84,46 @@ public class Board {
 
 	// Return 1 on white win, 2 on black win, else return 0
 	public int hasWinner() {
-		int hasWinner = 0;
+		int hasWinner = 0, queenCount = 0;
+		int[][] queens = new int[8][2];
 		boolean blackCanMove = false;
 		boolean whiteCanMove = false;
-		List<List<Integer>> queens = new ArrayList<List<Integer>>();
-
+		
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (board[i][j] == 1 || board[i][j] == 2) {
-					ArrayList<Integer> queenN = new ArrayList<Integer>();
-					queenN.add(i);
-					queenN.add(j);
-					queens.add(queenN);
+					queens[queenCount][0] = i;
+					queens[queenCount][1] = j;
+					queenCount++;
 				}
 			}
 		}
+		
+		for (int[] queen : queens) {
+		int row = queen[0];
+		int col = queen[1];
 
-		for (List<Integer> queen : queens) {
-			int row = queen.get(0);
-			int col = queen.get(1);
-
-			for (int i = -1; i < 2; i++) {
-				for (int j = -1; j < 2; j++) {
-					try {
-						if (board[row + i][col + j] == EMPTY)
-							if (board[row][col] == 1)
-								whiteCanMove = true;
-							else
-								blackCanMove = true;
-					} catch (Exception e) {
-						continue; // If out of bounds continue to next loop
-					}
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				try {
+					if (board[row + i][col + j] == EMPTY)
+						if (board[row][col] == 1)
+							whiteCanMove = true;
+						else
+							blackCanMove = true;
+				} catch (Exception e) {
+					continue; // If out of bounds continue to next loop
 				}
 			}
 		}
+	}
 
 		if (blackCanMove == false) {
 			hasWinner = 1;
 		} else if (whiteCanMove == false) {
 			hasWinner = 2;
 		}
-		
+
 		return hasWinner;
 	}
 
@@ -142,9 +140,10 @@ public class Board {
 		}
 		return sb.toString();
 	}
+
 	public void printBoard() {
-		for(int row = 0; row < 10; row ++) {
-			for(int col = 0; col < 10; col ++) {
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 10; col++) {
 				System.out.print(getTile(row, col));
 			}
 			System.out.println();

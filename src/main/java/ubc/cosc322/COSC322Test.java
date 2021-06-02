@@ -31,96 +31,7 @@ public class COSC322Test extends GamePlayer {
 	// @param args for name and passwd (current, any string would work)
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
-		
-		/*
-		Node root = new Node(null, null, null, Integer.MIN_VALUE);
-		int[] move1 = {0, 0, 0, 0, 0, 1};
-		Node node1 = new Node(null, move1, root, 10);
-		int[] move2 = {0, 0, 0, 0, 0, 2};
-		Node node2 = new Node(null, move2, root, 9);
-		int[] move3 = {0, 0, 0, 0, 0, 3};
-		Node node3 = new Node(null, move3, root, 7);
-		ArrayList<Node> depth1 = new ArrayList<Node>();
-		depth1.add(node1);
-		depth1.add(node2);
-		depth1.add(node3);
-		root.setChildren(depth1);
-		int[][] moveList1 = {{0, 0, 0, 0, 0, 1}};
-		int[] move11 = {1, 0, 0, 0, 0, 1};
-		Node node11 = new Node(moveList1, move11, node1, -1);
-		int[] move12 = {1, 0, 0, 0, 0, 2};
-		Node node12 = new Node(moveList1, move12, node1, 0);
-		int[] move13 = {1, 0, 0, 0, 0, 3};
-		Node node13 = new Node(moveList1, move13, node1, 2);
-		ArrayList<Node> depth11 = new ArrayList<Node>();
-		depth11.add(node11);
-		depth11.add(node12);
-		depth11.add(node13);
-		node1.setChildren(depth11);
-		int[][] moveList2 = {{0, 0, 0, 0, 0, 2}};
-		int[] move21 = {2, 0, 0, 0, 0, 1};
-		Node node21 = new Node(moveList2, move21, node2, 3);
-		int[] move22 = {2, 0, 0, 0, 0, 2};
-		Node node22 = new Node(moveList2, move22, node2, -4);
-		int[] move23 = {2, 0, 0, 0, 0, 3};
-		Node node23 = new Node(moveList2, move23, node2, 5);
-		ArrayList<Node> depth12 = new ArrayList<Node>();
-		depth12.add(node21);
-		depth12.add(node22);
-		depth12.add(node23);
-		node2.setChildren(depth12);
-		int[][] moveList3 = {{0, 0, 0, 0, 0, 3}};
-		int[] move31 = {3, 0, 0, 0, 0, 1};
-		Node node31 = new Node(moveList3, move31, node3, -2);
-		int[] move32 = {3, 0, 0, 0, 0, 2};
-		Node node32 = new Node(moveList3, move32, node3, 0);
-		int[] move33 = {3, 0, 0, 0, 0, 3};
-		Node node33 = new Node(moveList3, move33, node3, 8);
-		ArrayList<Node> depth13 = new ArrayList<Node>();
-		depth13.add(node31);
-		depth13.add(node32);
-		depth13.add(node33);
-		node3.setChildren(depth13);
-		ArrayList<Node> nodeList = new ArrayList<Node>();
-		nodeList.add(root);
-		nodeList.add(node1);
-		nodeList.add(node2);
-		nodeList.add(node3);
-		nodeList.add(node11);
-		nodeList.add(node12);
-		nodeList.add(node13);
-		nodeList.add(node21);
-		nodeList.add(node22);
-		nodeList.add(node23);
-		nodeList.add(node31);
-		nodeList.add(node32);
-		nodeList.add(node33);
-		Tree testTree = new Tree(nodeList);
-		int[] bestMove = testTree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-		for( int i = 0; i < bestMove.length; i ++) {
-			System.out.print(bestMove[i] + " ");
-		}
-		*/
-		
-		
-		
-		/*
-		RecursiveAI testBot = new RecursiveAI();
-		
-		System.out.println(testBot.toString());
-		
-		Tree tree = new Tree(testBot, 1);
-		
-		int[] bestMove = tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-		System.out.println("-------------SEARCH FINISHED----------------");
-		for( int i = 0; i < bestMove.length; i ++) {
-			System.out.print(bestMove[i] + " " );
-		}
-		System.out.println();
-		System.out.println(tree.timeElapsed());
-		*/
 
-		///*
 		if (player.getGameGUI() == null) {
 			player.Go();
 		} else {
@@ -131,7 +42,6 @@ public class COSC322Test extends GamePlayer {
 				}
 			});
 		}
-		//*/
 	}
 
 	// Any name and passwd
@@ -169,11 +79,8 @@ public class COSC322Test extends GamePlayer {
 		String playerBlack, playerWhite;
 		gameState = this.gameState;
 		System.out.println("Message Type: " + messageType);
-		
-		
-		
-		// Catches failure to handle message and returns false with error printed to
-		// console
+
+		// Catches failure to handle message and returns false and prints error to console.
 		try {
 			// Handle console output based on message type
 			switch (messageType) {
@@ -186,8 +93,8 @@ public class COSC322Test extends GamePlayer {
 
 				// Update GUI board with new state after move
 				this.gamegui.updateGameState(queenPosCurr, queenPosNext, arrowPos);
-				
-				//Check to see if the opponent made a valid move
+
+				// Check to see if the opponent made a valid move
 				// Will look at all possible moves for opponent and make sure it contains their move.
 				ArrayList<Integer> testBoard = new ArrayList<Integer>();
 				int[][] arrayTestBoard = new int[10][10];
@@ -200,26 +107,26 @@ public class COSC322Test extends GamePlayer {
 				int k = 0;
 				for (int i = 0; i < testBoard.size(); i++) {
 					if (i % 10 == 0 && i != 0)
-						k ++;
+						k++;
 					arrayTestBoard[k][i % 10] = testBoard.get(i);
 				}
 				RecursiveAI testOpponentMove = new RecursiveAI(arrayTestBoard);
 				testOpponentMove.printBoard();
-				int[] opponentMove = new int[] {queenPosCurr.get(0), queenPosCurr.get(1), queenPosNext.get(0), queenPosNext.get(1), arrowPos.get(0), arrowPos.get(1)};
-				if( testOpponentMove.wasValidMove(testOpponentMove, (player == 1) ? 2 : 1, opponentMove) == false) {
+				int[] opponentMove = new int[] { queenPosCurr.get(0), queenPosCurr.get(1), queenPosNext.get(0),
+						queenPosNext.get(1), arrowPos.get(0), arrowPos.get(1) };
+				if (testOpponentMove.wasValidMove(testOpponentMove, (player == 1) ? 2 : 1, opponentMove) == false) {
 					System.out.println("Opponent made an invalid move");
 					this.gameClient.sendTextMessage("Opponent made an invalid move");
-				}else {
+				} else {
 					System.out.println("Opponent made a valid move");
 				}
 				// End valid move checker
-				
+
 				// Update local board with most recent move
 				gameState.set(queenPosCurr.get(0) * 11 + queenPosCurr.get(1), 0);
 				gameState.set(queenPosNext.get(0) * 11 + queenPosNext.get(1), (player == 1) ? 2 : 1);
 				gameState.set(arrowPos.get(0) * 11 + arrowPos.get(1), 3);
-				// Creates local game board that has correct size (index 0->9 x 0->9, i.e 10x10
-				// board)
+				// Creates local game board that has correct size (index 0->9 x 0->9, i.e 10x10 board)
 				ArrayList<Integer> gameBoard = new ArrayList<Integer>();
 				int[][] arrayBoard = new int[10][10];
 				for (int i = 0; i < gameState.size(); i++) {
@@ -231,38 +138,27 @@ public class COSC322Test extends GamePlayer {
 				int j = 0;
 				for (int i = 0; i < gameBoard.size(); i++) {
 					if (i % 10 == 0 && i != 0)
-						j ++;
+						j++;
 					arrayBoard[j][i % 10] = gameBoard.get(i);
 				}
-				
-				
+
 				RecursiveAI ai = new RecursiveAI(arrayBoard);
 				ai.printBoard();
 				Tree tree = new Tree(ai, player);
 				int[] bestMove = tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-				if ( tree.validMove() == true) {
+				if (tree.validMove() == true) {
 					System.out.println();
-					int prevRow = bestMove[1];
-					int prevCol = bestMove[2];
-					int nextRow = bestMove[3];
-					int nextCol = bestMove[4];
-					int spearRow = bestMove[5];
-					int spearCol = bestMove[6];
-					int prevRowAdjusted = prevRow + 1;
-					int prevColAdjusted = prevCol + 1;
-					int nextRowAdjusted = nextRow + 1;
-					int nextColAdjusted = nextCol + 1;
-					int spearRowAdjusted = spearRow + 1;
-					int spearColAdjusted = spearCol + 1;
+					// bestMove[#] + 1 adjusts move to compensate for difference between the online and offline board.
+					// bestMove[] = {score, prevRow, prevCol, nextRow, nextCol, spearRow, spearCol}
 					ArrayList<Integer> queenToMove = new ArrayList<Integer>();
-					queenToMove.add(prevRowAdjusted);
-					queenToMove.add(prevColAdjusted);
+					queenToMove.add(bestMove[1] + 1);
+					queenToMove.add(bestMove[2] + 1);
 					ArrayList<Integer> queenGoesTo = new ArrayList<Integer>();
-					queenGoesTo.add(nextRowAdjusted);
-					queenGoesTo.add(nextColAdjusted);
+					queenGoesTo.add(bestMove[3] + 1);
+					queenGoesTo.add(bestMove[4] + 1);
 					ArrayList<Integer> spearGoesTo = new ArrayList<Integer>();
-					spearGoesTo.add(spearRowAdjusted);
-					spearGoesTo.add(spearColAdjusted);
+					spearGoesTo.add(bestMove[5] + 1);
+					spearGoesTo.add(bestMove[6] + 1);
 					System.out.println(queenToMove + " " + queenGoesTo + " " + spearGoesTo);
 					this.gameClient.sendMoveMessage(queenToMove, queenGoesTo, spearGoesTo);
 					this.gamegui.updateGameState(queenToMove, queenGoesTo, spearGoesTo);
@@ -272,23 +168,24 @@ public class COSC322Test extends GamePlayer {
 					this.gameState = gameState;
 					System.out.println(tree.timeElapsed());
 				} else {
-					//If there are no moves avaliable, move to a random spot on the board and throw a spear
-					//to a random spot, hope the opponent is not checking valid moves.
+					// It's an auto-loss.
+					// If there are no moves available, move to a random spot on the board and throw
+					// a spear to a random spot, hope the opponent is not checking valid moves.
 					System.out.println("Random Move Time");
 					int dummyQueenRow = 1;
 					int dummyQueenCol = 1;
-					for ( int i = 0 ; i < 10; i ++) {
-						for( int ii = 0; ii < 10; ii ++) {
-							if(ai.getTile(i, ii) == player) {
+					for (int i = 0; i < 10; i++) {
+						for (int ii = 0; ii < 10; ii++) {
+							if (ai.getTile(i, ii) == player) {
 								dummyQueenRow = i + 1;
 								dummyQueenCol = ii + 1;
 							}
 						}
 					}
-					int dummyToRow = (int) (Math.random() * 9 ) + 1;
-					int dummyToCol = (int) (Math.random() * 9 ) + 1;
-					int dummySpearRow = (int) (Math.random() * 9 ) + 1;
-					int dummySpearCol = (int) (Math.random() * 9 ) + 1;
+					int dummyToRow = (int) (Math.random() * 9) + 1;
+					int dummyToCol = (int) (Math.random() * 9) + 1;
+					int dummySpearRow = (int) (Math.random() * 9) + 1;
+					int dummySpearCol = (int) (Math.random() * 9) + 1;
 					ArrayList<Integer> dummyQueenLoc = new ArrayList<Integer>();
 					dummyQueenLoc.add(dummyQueenRow);
 					dummyQueenLoc.add(dummyQueenCol);
@@ -312,18 +209,17 @@ public class COSC322Test extends GamePlayer {
 				playerBlack = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				playerWhite = (String) msgDetails.get(AmazonsGameMessage.PLAYER_WHITE);
 				player = (userName.equals(playerBlack)) ? 1 : 2;
+
 				System.out.println("PLAYER IS: " + player + " " + playerBlack + " " + userName);
-				//gameState = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.GAME_STATE);
-				
 				System.out.println("\nGame Started!!\n" + playerBlack + "(B) vs. " + playerWhite + "(W)");
-				if( player == 1) {
+				if (player == 1) {
 					int firstQueenPrevRow = 10;
 					int firstQueenPrevCol = 4;
 					int firstQueenNextRow = 4;
 					int firstQueenNextCol = 4;
 					int firstSpearRow = 4;
 					int firstSpearCol = 7;
-										
+
 					ArrayList<Integer> queenFirstMove = new ArrayList<Integer>();
 					queenFirstMove.add(firstQueenPrevRow);
 					queenFirstMove.add(firstQueenPrevCol);
@@ -340,11 +236,6 @@ public class COSC322Test extends GamePlayer {
 					gameState.set(firstSpearRow * 11 + firstSpearCol, 3);
 					this.gameState = gameState;
 				}
-				/*
-				 * System.out.print("Board State: "); for (int i = 11; i < gameState.size();
-				 * i++) { if (i % 11 == 0) System.out.println(); else
-				 * System.out.print(gameState.get(i)); } System.out.println("\n");
-				 */ 
 				break;
 
 			case GameMessage.GAME_STATE_BOARD:
@@ -368,8 +259,8 @@ public class COSC322Test extends GamePlayer {
 			System.err.println(e.toString());
 			System.err.println("\nERROR: Message Handling Failed\nmessageType: " + messageType + "\nmsgDetails: "
 					+ msgDetails.toString());
-			throw(e);
-			//return false;
+			throw (e);
+			// return false;
 		}
 		return true;
 	}

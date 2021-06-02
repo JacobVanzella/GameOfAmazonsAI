@@ -3,22 +3,21 @@ package amazonsChessRecursive;
 import java.util.ArrayList;
 import java.util.List;
 
-import amazonsChess.Board;
 import amazonsChess.RecursiveAI;
 
 public class Tree {
 	public Node root;
-	private int depth;
-	private ArrayList<Node> frontier = new ArrayList<Node>();
-	public ArrayList<Node> foundNodes = new ArrayList<Node>();
+
+	private int depth = 0, player = 0, opponent = 0, runTime = 0;
 	private int[][] board = new int[10][10];
-	int player = 0;
-	int opponent = 0;
-	Long secondsElapsed = Long.MIN_VALUE;
-	Long startTime = Long.MIN_VALUE;
-	boolean keepGoing = true;
-	int runTime = 0;
-	boolean validMove = true;
+	
+	private boolean keepGoing = true, validMove = true;
+	
+	private Long secondsElapsed = Long.MIN_VALUE;
+	private Long startTime = Long.MIN_VALUE;
+	
+	private ArrayList<Node> frontier = new ArrayList<Node>();
+	private ArrayList<Node> foundNodes = new ArrayList<Node>();
 
 	public Tree(RecursiveAI currBoard, int player) {
 		this.root = new Node(null, null, null, Integer.MIN_VALUE);
@@ -40,7 +39,7 @@ public class Tree {
 		// set amount of time to run the AI
 		// runTime only controls time to generate the nodes
 		// therefore want to leave a 2-3 seconds for the alpha-beta search.
-		this.runTime = 28;
+		this.runTime = 5;
 
 		// will keep going until expandNode runs out of alloted time
 		while (this.keepGoing) {
@@ -52,8 +51,8 @@ public class Tree {
 		System.out.println("DONE");
 	}
 
-	public void getDepth() { // Q: this is checking the depth of the left-most branch, if this is a terminal
-								// node immediatly, but the others are not, wont this lead to a "false depth"
+	// Q: this is checking the depth of the left-most branch, if this is a terminal node immediatly, but the others are not, wont this lead to a "false depth"
+	public void getDepth() {
 		Node node = this.root;
 		int depth = 0;
 		while (node != null) {
@@ -80,6 +79,7 @@ public class Tree {
 		return this.validMove;
 	}
 
+	// TODO: Parallelize
 	public void expandFrontier() {
 		if (frontier.size() == 0) {
 			this.validMove = false;
@@ -96,6 +96,7 @@ public class Tree {
 		}
 	}
 
+	// TODO: Parallelize
 	public List<Node> expandNode(Node node) {
 		// the new nodes that are going to be added to the frontier list.
 		List<Node> discoveredNodes = new ArrayList<Node>();
@@ -111,15 +112,12 @@ public class Tree {
 		// there not the board itself)
 		if (parentMoveList != null) {
 			for (int[] move : parentMoveList) {
-				// System.out.println(
-				// move[0] + "," + move[1] + "->" + move[2] + "," + move[3] + " Spear:" +
-				// move[4] + "," + move[5]);
 				testBoard.moveQueen(move[0], move[1], move[2], move[3], player);
 				testBoard.throwSpear(move[4], move[5]);
 			}
 		}
-		// now testBoard contains the nodes board state, can find all moves from that
-		// board
+
+		// now testBoard contains the nodes board state, can find all moves from that board
 		List<int[]> possibleMoves = testBoard.getMovesArray(testBoard, currentTurn);
 
 		// Test each move, find their score then add them to a list to return back
@@ -138,10 +136,17 @@ public class Tree {
 			testMove.throwSpear(newMove[4], newMove[5]);
 			int moveScore = testMove.scoreMove(testMove.getBoard(), newMove, player);
 			Node newChild = new Node(parentMoveList, newMove, node, moveScore);
-			// newChild.setChildren(null); // sets children list to null if leaf node
 			discoveredNodes.add(newChild);
 			// System.out.println(newChild.toString());
 		}
+
+		// Set depth of the tree
+		int nodeDepth = this.getNodeDepth(node);
+		if (this.depth < nodeDepth) {
+			this.depth = this.getNodeDepth(node);
+			System.out.println(this.depth);
+		}
+
 		// updates children since no longer a leaf, used for searching
 		node.setChildren(discoveredNodes);
 		return discoveredNodes;
@@ -167,9 +172,8 @@ public class Tree {
 		}
 	}
 
+	// TODO: Parallelize
 	public int[] alphaBeta(Node node, int alpha, int beta) {
-		// int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
-
 		// Handle terminal case (leaf of tree)
 		if (node.getChildren().isEmpty()) {
 			int[] currentMove = new int[6];
@@ -182,10 +186,12 @@ public class Tree {
 
 			return returnVal;
 		}
-		int[] currentMove = new int[7];
 
+		int[] currentMove = new int[7];
 		if (this.getNodeDepth(node) % 2 == 0) { // Max turn
 			int[] max = new int[7];
+			int[] returnValue = new int[7];
+
 			max[0] = Integer.MIN_VALUE;
 			for (Node child : node.getChildren()) {
 				int[] childMove = getLastMove(child);
@@ -211,20 +217,21 @@ public class Tree {
 			}
 
 			// return max - which is the move array
-			int[] returnValue = new int[7];
 			for (int i = 0; i < 7; i++) {
 				returnValue[i] = max[i];
 			}
-			return returnValue;
 
+			return returnValue;
 		} else { // Min turn
 			int[] min = new int[7];
+			int[] returnValue = new int[7];
+
 			min[0] = Integer.MAX_VALUE;
 			for (Node child : node.getChildren()) {
 				int[] childMove = getLastMove(child);
 				currentMove = alphaBeta(child, alpha, beta);
 
-				// min = Math.min( min.score, currentMove.score);
+				// min = Math.min(min.score, currentMove.score);
 				if (currentMove[0] < min[0]) {
 					min[0] = currentMove[0];
 					for (int i = 0; i < 6; i++) {
@@ -232,7 +239,7 @@ public class Tree {
 					}
 				}
 
-				// beta = Math.min( min, beta)
+				// beta = Math.min(min, beta)
 				if (min[0] < beta) {
 					beta = min[0];
 				}
@@ -245,10 +252,10 @@ public class Tree {
 			}
 
 			// return min - which is the move array
-			int[] returnValue = new int[7];
 			for (int i = 0; i < 7; i++) {
 				returnValue[i] = min[i];
 			}
+
 			return returnValue;
 		}
 	}

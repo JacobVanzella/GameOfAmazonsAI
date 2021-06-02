@@ -11,10 +11,9 @@ public class Node {
 	private int score;
 
 	public Node(int[][] prevMoves, int[] move, Node parentNode, int score) {
-		// int depth = prevMoves.length + 1;
 		this.parentNode = parentNode;
 		this.score = score;
-		// System.out.println(prevMoves.length);
+		
 		if (parentNode == null) {
 			this.moveList = null;
 		} else {
@@ -41,7 +40,6 @@ public class Node {
 				}
 			}
 		}
-		// ArrayList<Node> children = new ArrayList<Node>();
 	}
 
 	public void setParentNode(Node parentNode) {
