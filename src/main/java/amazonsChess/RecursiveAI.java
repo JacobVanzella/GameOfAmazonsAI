@@ -3,8 +3,6 @@ package amazonsChess;
 import java.util.ArrayList;
 import java.util.List;
 
-import amazonsChessRecursive.Node;
-
 // TODO Consider creating a Move class to simplify code
 // Constructors
 // public class Move(){}
@@ -30,31 +28,19 @@ public class RecursiveAI extends Board {
 		this.parent = parent;
 	}
 
-	public int scoreMove(int[][] board, int[] move, int player) {
-		RecursiveAI testMoveAI = new RecursiveAI(board); // create copy of board
-		testMoveAI.moveQueen(move[0], move[1], move[2], move[3], player);
-		testMoveAI.throwSpear(move[4], move[5]);
-
-		int opponent = (player == 1) ? 2 : 1;
-		int playerMoves = getMovesArray(testMoveAI, player).size();
-		int opponentMoves = getMovesArray(testMoveAI, opponent).size();
-		int score = playerMoves - opponentMoves;
-
-		return score;
-	}
 	public int scoreMove(int[][] board, int player) {
 		
 		RecursiveAI testMoveAI = new RecursiveAI(board); // create copy of board
 		
 		int opponent = (player == 1) ? 2 : 1;
-		int playerMoves = getMovesArray(testMoveAI, player).size();
-		int opponentMoves = getMovesArray(testMoveAI, opponent).size();
+		int playerMoves = getMoves(testMoveAI, player).size();
+		int opponentMoves = getMoves(testMoveAI, opponent).size();
 		int score = playerMoves - opponentMoves;
 
 		return score;
 	}
 
-	public List<int[]> getMovesArray(RecursiveAI currBoard, int player) {
+	public List<int[]> getMoves(RecursiveAI currBoard, int player) {
 		// The nested List has form (prevRow, prevCol, nextRow, nextCol) for available
 		// moves
 		List<int[]> moves = new ArrayList<int[]>(); // will store array of moves in a list
@@ -148,7 +134,7 @@ public class RecursiveAI extends Board {
 	}
 
 	public boolean wasValidMove(RecursiveAI currBoard, int opponent, int[] move) {
-		List<int[]> validMoves = currBoard.getMovesArray(currBoard, opponent);
+		List<int[]> validMoves = currBoard.getMoves(currBoard, opponent);
 		
 		int prevRowAdjusted = move[0] - 1;
 		int prevColAdjusted = move[1] - 1;
@@ -175,7 +161,7 @@ public class RecursiveAI extends Board {
 	public int desiredDepth = 1;
 	Long startTime;
 	Long currentTime;
-	Long runTime = (long) 3;
+	Long runTime = (long) 27;
 	
 	public int[] iterativeDeepeningSearch(int player, int opponent) {
 		int alpha = Integer.MIN_VALUE;
@@ -203,28 +189,17 @@ public class RecursiveAI extends Board {
 				}
 			}
 			
-			// tests to determine to keep going
-			Long depthTime = (System.currentTimeMillis() - currentTime) / 1000;
+			
 			//currentTime = System.currentTimeMillis();
 			System.out.println("TOTAL RUNTIME: " + (currentTime - startTime ) / 1000);
-			System.out.println("DEPTH " + desiredDepth + " RUNTIME: " + depthTime);
 			System.out.println("CURRENT BEST MOVE: ");
 			for( int i = 0; i < bestMove.length; i ++) {
 				System.out.print(bestMove[i] + " ");
 			}
 			System.out.println();
-			
-			Long duration = (currentTime - startTime ) / 1000;
+
 			desiredDepth ++;
-			/* if time is over 20 seconds or last depth took over 0.3 second stop
-			if( duration > (long) 20  || depthTime > (long) 0.1) {
-				toContinue = false;
-			}
-			desiredDepth ++;
-			if( desiredDepth == 3) {
-				toContinue = false;
-			}
-			*/
+
 			if( toContinue == false) 
 				System.out.println("SEARCH ENDED AT DEPTH: " + (desiredDepth - 1) );
 			 else 
@@ -260,7 +235,7 @@ public class RecursiveAI extends Board {
 			int[] max = new int[7];
 			max[0] = Integer.MIN_VALUE;
 			depth ++;
-			List<int[]> playerMoveList = boardState.getMovesArray(boardState, player);
+			List<int[]> playerMoveList = boardState.getMoves(boardState, player);
 			for (int[] childMove : playerMoveList) {
 				
 				RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
@@ -305,7 +280,7 @@ public class RecursiveAI extends Board {
 			int[] min = new int[7];
 			min[0] = Integer.MAX_VALUE;
 			depth++;
-			List<int[]> opponentMoveList = boardState.getMovesArray(boardState, opponent);
+			List<int[]> opponentMoveList = boardState.getMoves(boardState, opponent);
 			for (int[] childMove : opponentMoveList) {
 				
 				RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());

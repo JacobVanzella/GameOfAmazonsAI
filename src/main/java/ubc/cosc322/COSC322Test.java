@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import amazonsChess.RecursiveAI;
-import amazonsChessRecursive.Node;
-import amazonsChessRecursive.Tree;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
