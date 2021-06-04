@@ -70,11 +70,6 @@ public class Board {
 	public void throwSpear(int row, int col) {
 		board[row][col] = SPEAR;
 	}
-	public void makePlay( int[] move, int player) {
-		board[move[0]][move[1]] = EMPTY;
-		board[move[2]][move[3]] = player;
-		board[move[4]][move[5]] = SPEAR;
-	}
 
 	@Override
 	public String toString() {
