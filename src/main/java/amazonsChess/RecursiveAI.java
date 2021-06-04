@@ -173,21 +173,39 @@ public class RecursiveAI extends Board {
 	
 	public int depth = 0;
 	public int desiredDepth = 1;
+	Long startTime;
+	Long currentTime;
+	Long runTime = (long) 3;
 	
 	public int[] iterativeDeepeningSearch(int player, int opponent) {
 		int alpha = Integer.MIN_VALUE;
 		int beta = Integer.MAX_VALUE;
-		Long startTime = System.currentTimeMillis();
-		Long currentTime = System.currentTimeMillis();
+		this.startTime = System.currentTimeMillis();
+		this.currentTime = System.currentTimeMillis();
 		
 		boolean toContinue = true;
 		int[] bestMove = new int[7];
+		int[] currentMove = new int[7];
 		while( toContinue == true ) {
-			bestMove = alphaBetaJared(this, alpha, beta, player, opponent);
+			currentMove = alphaBetaJared(this, alpha, beta, player, opponent);
+			
+			int invalidCounter = 0;
+			for( int i : currentMove) {
+				if( i == Integer.MIN_VALUE ) {
+					invalidCounter ++;
+				}
+			}
+			if ( invalidCounter > 1) {
+				toContinue = false;
+			}else {
+				for( int i = 0 ; i < currentMove.length; i ++) {
+					bestMove[i] = currentMove[i];
+				}
+			}
 			
 			// tests to determine to keep going
 			Long depthTime = (System.currentTimeMillis() - currentTime) / 1000;
-			currentTime = System.currentTimeMillis();
+			//currentTime = System.currentTimeMillis();
 			System.out.println("TOTAL RUNTIME: " + (currentTime - startTime ) / 1000);
 			System.out.println("DEPTH " + desiredDepth + " RUNTIME: " + depthTime);
 			System.out.println("CURRENT BEST MOVE: ");
@@ -197,8 +215,8 @@ public class RecursiveAI extends Board {
 			System.out.println();
 			
 			Long duration = (currentTime - startTime ) / 1000;
-			
-			// if time is over 20 seconds or last depth took over 0.3 second stop
+			desiredDepth ++;
+			/* if time is over 20 seconds or last depth took over 0.3 second stop
 			if( duration > (long) 20  || depthTime > (long) 0.1) {
 				toContinue = false;
 			}
@@ -206,6 +224,7 @@ public class RecursiveAI extends Board {
 			if( desiredDepth == 3) {
 				toContinue = false;
 			}
+			*/
 			if( toContinue == false) 
 				System.out.println("SEARCH ENDED AT DEPTH: " + (desiredDepth - 1) );
 			 else 
@@ -216,17 +235,19 @@ public class RecursiveAI extends Board {
 	}
 	
 	public int[] alphaBetaJared(RecursiveAI boardState, int alpha, int beta, int player, int opponent) {
-		if( desiredDepth > 10) {
-			for( int[] move : boardState.getMovesArray(boardState, player)) {
-				for( int i = 0; i < move.length; i ++) {
-					System.out.print(move[i] + " ");
-				}
-				System.out.println();
-			}
-		}
-		
+				
 		//System.out.println(boardState.toString());
 		int[] currentMove = new int[7];
+		
+		this.currentTime = System.currentTimeMillis();
+		Long timeElapsed = (this.currentTime - this.startTime ) / 1000;
+		
+		if( timeElapsed > this.runTime) {
+			for( int i = 0; i < currentMove.length; i ++) {
+				currentMove[i] = Integer.MIN_VALUE;
+			}
+			return currentMove;
+		}
 		
 		if ( depth >= desiredDepth ) {
 			int score = boardState.scoreMove(boardState.getBoard(), player);
@@ -247,6 +268,13 @@ public class RecursiveAI extends Board {
 				
 				
 				currentMove = alphaBetaJared(childBoard, alpha, beta, player, opponent);
+				
+				if( currentMove[0] == Integer.MIN_VALUE) {
+					for( int i = 0; i < currentMove.length; i ++) {
+						currentMove[i] = Integer.MIN_VALUE;
+					}
+					return currentMove;
+				}
 				
 				// max = Math.max(max.score, currentMove.score);
 				if (currentMove[0] > max[0]) {
@@ -283,6 +311,14 @@ public class RecursiveAI extends Board {
 				childBoard.throwSpear(childMove[4], childMove[5]);
 				
 				currentMove = alphaBetaJared(childBoard, alpha, beta, player, opponent);
+				
+				if( currentMove[0] == Integer.MIN_VALUE) {
+					for( int i = 0; i < currentMove.length; i ++) {
+						currentMove[i] = Integer.MIN_VALUE;
+					}
+					return currentMove;
+				}
+				
 				
 				// min = Math.min( min.score, currentMove.score);
 				if (currentMove[0] < min[0]) {

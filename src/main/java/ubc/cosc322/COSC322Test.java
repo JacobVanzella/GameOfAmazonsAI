@@ -258,7 +258,12 @@ public class COSC322Test extends GamePlayer {
 				ai.printBoard();
 				//Tree tree = new Tree(ai, player);
 				int[] bestMove =ai.iterativeDeepeningSearch(player, (player == 1) ? 2 : 1); //tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-				if ( true) {
+				boolean validMoveLeft = true;
+				
+				if( bestMove[1] == bestMove[2] && bestMove[1] == bestMove[3] && bestMove[1] == bestMove[4])
+					validMoveLeft = false;
+				
+				if ( validMoveLeft == true) {
 					System.out.println();
 					int prevRow = bestMove[1];
 					int prevCol = bestMove[2];
