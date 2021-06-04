@@ -260,7 +260,8 @@ public class RecursiveAI extends Board {
 			int[] max = new int[7];
 			max[0] = Integer.MIN_VALUE;
 			depth ++;
-			for (int[] childMove : boardState.getMovesArray(boardState, player)) {
+			List<int[]> playerMoveList = boardState.getMovesArray(boardState, player);
+			for (int[] childMove : playerMoveList) {
 				
 				RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
 				childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], player);
@@ -304,7 +305,8 @@ public class RecursiveAI extends Board {
 			int[] min = new int[7];
 			min[0] = Integer.MAX_VALUE;
 			depth++;
-			for (int[] childMove : boardState.getMovesArray(boardState, opponent)) {
+			List<int[]> opponentMoveList = boardState.getMovesArray(boardState, opponent);
+			for (int[] childMove : opponentMoveList) {
 				
 				RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
 				childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], opponent);
