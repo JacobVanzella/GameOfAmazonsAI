@@ -119,7 +119,25 @@ public class COSC322Test extends GamePlayer {
 		System.out.println();
 		System.out.println(tree.timeElapsed());
 		*/
-
+		
+		
+		/*
+		Long startTime = System.currentTimeMillis();
+		
+		RecursiveAI tester = new RecursiveAI();
+		int testPlayerBlack = 1;
+		int[] bestMove = tester.iterativeDeepeningSearch(1, 2); //tester.alphaBetaJared(tester, Integer.MIN_VALUE, Integer.MAX_VALUE, testPlayerBlack, 2);
+		System.out.println("----OUTPUT MOVE----");
+		for( int i = 0; i < bestMove.length; i ++) {
+			System.out.print(bestMove[i] + " ");
+		}
+		System.out.println();
+		
+		Long finishTime = System.currentTimeMillis();
+		
+		System.out.println("TIME TOOK: " + (finishTime - startTime) / 1000);
+		*/
+		
 		///*
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -238,9 +256,9 @@ public class COSC322Test extends GamePlayer {
 				
 				RecursiveAI ai = new RecursiveAI(arrayBoard);
 				ai.printBoard();
-				Tree tree = new Tree(ai, player);
-				int[] bestMove = tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-				if ( tree.validMove() == true) {
+				//Tree tree = new Tree(ai, player);
+				int[] bestMove =ai.iterativeDeepeningSearch(player, (player == 1) ? 2 : 1); //tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+				if ( true) {
 					System.out.println();
 					int prevRow = bestMove[1];
 					int prevCol = bestMove[2];
@@ -270,7 +288,7 @@ public class COSC322Test extends GamePlayer {
 					gameState.set(queenGoesTo.get(0) * 11 + queenGoesTo.get(1), player);
 					gameState.set(spearGoesTo.get(0) * 11 + spearGoesTo.get(1), 3);
 					this.gameState = gameState;
-					System.out.println(tree.timeElapsed());
+					//System.out.println(tree.timeElapsed());
 				} else {
 					//If there are no moves avaliable, move to a random spot on the board and throw a spear
 					//to a random spot, hope the opponent is not checking valid moves.
