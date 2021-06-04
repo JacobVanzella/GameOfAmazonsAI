@@ -13,23 +13,13 @@ public class RecursiveAI extends Board {
 
 	public RecursiveAI(int[][] board) {
 		super(board);
-		//this.board = board;
-	}
-
-	public RecursiveAI(RecursiveAI parent) {
-		super();
-		this.parent = parent;
 	}
 
 	public int scoreMove(int[][] board, int[] move, int player) {
-		int[][] copyBoard = new int[10][10];
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				copyBoard[j][i] = board[j][i];
-			}
-		}
-		RecursiveAI testMoveAI = new RecursiveAI(copyBoard); // create copy of board
+		
+		RecursiveAI testMoveAI = new RecursiveAI(board); // create copy of board
 		testMoveAI.moveQueen(move[0], move[1], move[2], move[3], player);
+		testMoveAI.throwSpear(move[4], move[5]);
 
 		int opponent = (player == 1) ? 2 : 1;
 		int playerMoves = getMovesArray(testMoveAI, player).size();
@@ -49,12 +39,10 @@ public class RecursiveAI extends Board {
 		// they play invalid moves (will break array)
 		List<List<Integer>> queenPos = new ArrayList<List<Integer>>();
 
-		//System.out.println(currBoard.toString()); // for debugging
-
+		// loop to find each queen position for the given player
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 				if (currBoard.getTile(row, col) == player) {
-					// System.out.println("Row: " + row + " Col: " + col); // for debugging
 					ArrayList<Integer> queenN = new ArrayList<Integer>();
 					queenN.add(row);
 					queenN.add(col);
@@ -62,8 +50,10 @@ public class RecursiveAI extends Board {
 				}
 			}
 		}
+		
 		// Find possible moves for each queen
 		for (List<Integer> queenCordinates : queenPos) {
+			
 			int currRow = queenCordinates.get(0);
 			int currCol = queenCordinates.get(1);
 			int nextRow = currRow;
@@ -77,7 +67,6 @@ public class RecursiveAI extends Board {
 
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
-					// .println(currBoard.toString());
 					canMove = true;
 					dist = 1;
 					try {
@@ -86,7 +75,6 @@ public class RecursiveAI extends Board {
 							nextCol = currCol + j * dist;
 
 							if (currBoard.getTile(nextRow, nextCol) == EMPTY) {
-								// System.out.println(currRow + " " + currCol + " " + nextRow + " " + nextCol);
 								RecursiveAI testboard = new RecursiveAI(currBoard.getBoard());
 								testboard.moveQueen(currRow, currCol, nextRow, nextCol, player);
 
@@ -94,17 +82,11 @@ public class RecursiveAI extends Board {
 									for (int r = -1; r < 2; r++) {
 										spearCanMove = true;
 										spearDist = 1;
-										// spearRow = nextRow;
-										// spearCol = nextCol;
 										try {
 											while (spearCanMove) {
 												spearRow = nextRow + k * spearDist;
 												spearCol = nextCol + r * spearDist;
-												 //System.out.println(currRow + " " + currCol + " " + nextRow + " " +
-												 //nextCol);
-												 //System.out.println(spearRow + " " + spearCol);
 												if (testboard.getTile(spearRow, spearCol) == EMPTY) {
-													 //System.out.println(testboard.toString());
 													int[] move = new int[] { currRow, currCol, nextRow, nextCol,
 															spearRow, spearCol };
 													moves.add(move);
@@ -133,8 +115,8 @@ public class RecursiveAI extends Board {
 	}
 
 	public boolean wasValidMove(RecursiveAI currBoard, int opponent, int[] move) {
-		List<int[]> validMoves = currBoard.getMovesArray(currBoard, opponent);
 		
+		List<int[]> validMoves = currBoard.getMovesArray(currBoard, opponent);	
 		int prevRowAdjusted = move[0] - 1;
 		int prevColAdjusted = move[1] - 1;
 		int nextRowAdjusted = move[2] - 1;
@@ -142,6 +124,7 @@ public class RecursiveAI extends Board {
 		int spearRowAdjusted = move[4] - 1;
 		int spearColAdjusted = move[5] - 1;
 		int[] adjMove = {prevRowAdjusted, prevColAdjusted, nextRowAdjusted, nextColAdjusted, spearRowAdjusted, spearColAdjusted};
+		
 		for ( int[] moveN : validMoves) {
 			boolean contains = true;
 			for( int i = 0; i < move.length; i ++) {
@@ -153,6 +136,7 @@ public class RecursiveAI extends Board {
 				}
 			}
 		}
+		
 		return false;
 	}
 }

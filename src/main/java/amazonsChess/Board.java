@@ -44,18 +44,6 @@ public class Board {
 		return tempBoard;
 	}
 
-	public void updateBoard(int[][] newBoard) {
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 10; j++)
-				board[i][j] = newBoard[i][j];
-	}
-
-	public void clone(Board source) {
-		for (int i = 0; i < 100; i++)
-			for (int j = 0; j < 10; j++)
-				board[i][j] = source.board[i][j];
-	}
-
 	public int getTile(int row, int col) {
 		return board[row][col];
 	}
@@ -82,7 +70,35 @@ public class Board {
 	public void throwSpear(int row, int col) {
 		board[row][col] = SPEAR;
 	}
+	public void makePlay( int[] move, int player) {
+		board[move[0]][move[1]] = EMPTY;
+		board[move[2]][move[3]] = player;
+		board[move[4]][move[5]] = SPEAR;
+	}
 
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 10; col++) {
+				sb.append(getTileSymbol(row, col));
+			}
+			if (row != 9) {
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
+	}
+	public void printBoard() {
+		for(int row = 0; row < 10; row ++) {
+			for(int col = 0; col < 10; col ++) {
+				System.out.print(getTile(row, col));
+			}
+			System.out.println();
+		}
+	}
+	
+	/*
 	// Return 1 on white win, 2 on black win, else return 0
 	public int hasWinner() {
 		int hasWinner = 0;
@@ -128,26 +144,5 @@ public class Board {
 		
 		return hasWinner;
 	}
-
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		for (int row = 0; row < 10; row++) {
-			for (int col = 0; col < 10; col++) {
-				sb.append(getTileSymbol(row, col));
-			}
-			if (row != 9) {
-				sb.append("\n");
-			}
-		}
-		return sb.toString();
-	}
-	public void printBoard() {
-		for(int row = 0; row < 10; row ++) {
-			for(int col = 0; col < 10; col ++) {
-				System.out.print(getTile(row, col));
-			}
-			System.out.println();
-		}
-	}
+	*/
 }
