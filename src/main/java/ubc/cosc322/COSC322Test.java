@@ -31,95 +31,6 @@ public class COSC322Test extends GamePlayer {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		
 		/*
-		Node root = new Node(null, null, null, Integer.MIN_VALUE);
-		int[] move1 = {0, 0, 0, 0, 0, 1};
-		Node node1 = new Node(null, move1, root, 10);
-		int[] move2 = {0, 0, 0, 0, 0, 2};
-		Node node2 = new Node(null, move2, root, 9);
-		int[] move3 = {0, 0, 0, 0, 0, 3};
-		Node node3 = new Node(null, move3, root, 7);
-		ArrayList<Node> depth1 = new ArrayList<Node>();
-		depth1.add(node1);
-		depth1.add(node2);
-		depth1.add(node3);
-		root.setChildren(depth1);
-		int[][] moveList1 = {{0, 0, 0, 0, 0, 1}};
-		int[] move11 = {1, 0, 0, 0, 0, 1};
-		Node node11 = new Node(moveList1, move11, node1, -1);
-		int[] move12 = {1, 0, 0, 0, 0, 2};
-		Node node12 = new Node(moveList1, move12, node1, 0);
-		int[] move13 = {1, 0, 0, 0, 0, 3};
-		Node node13 = new Node(moveList1, move13, node1, 2);
-		ArrayList<Node> depth11 = new ArrayList<Node>();
-		depth11.add(node11);
-		depth11.add(node12);
-		depth11.add(node13);
-		node1.setChildren(depth11);
-		int[][] moveList2 = {{0, 0, 0, 0, 0, 2}};
-		int[] move21 = {2, 0, 0, 0, 0, 1};
-		Node node21 = new Node(moveList2, move21, node2, 3);
-		int[] move22 = {2, 0, 0, 0, 0, 2};
-		Node node22 = new Node(moveList2, move22, node2, -4);
-		int[] move23 = {2, 0, 0, 0, 0, 3};
-		Node node23 = new Node(moveList2, move23, node2, 5);
-		ArrayList<Node> depth12 = new ArrayList<Node>();
-		depth12.add(node21);
-		depth12.add(node22);
-		depth12.add(node23);
-		node2.setChildren(depth12);
-		int[][] moveList3 = {{0, 0, 0, 0, 0, 3}};
-		int[] move31 = {3, 0, 0, 0, 0, 1};
-		Node node31 = new Node(moveList3, move31, node3, -2);
-		int[] move32 = {3, 0, 0, 0, 0, 2};
-		Node node32 = new Node(moveList3, move32, node3, 0);
-		int[] move33 = {3, 0, 0, 0, 0, 3};
-		Node node33 = new Node(moveList3, move33, node3, 8);
-		ArrayList<Node> depth13 = new ArrayList<Node>();
-		depth13.add(node31);
-		depth13.add(node32);
-		depth13.add(node33);
-		node3.setChildren(depth13);
-		ArrayList<Node> nodeList = new ArrayList<Node>();
-		nodeList.add(root);
-		nodeList.add(node1);
-		nodeList.add(node2);
-		nodeList.add(node3);
-		nodeList.add(node11);
-		nodeList.add(node12);
-		nodeList.add(node13);
-		nodeList.add(node21);
-		nodeList.add(node22);
-		nodeList.add(node23);
-		nodeList.add(node31);
-		nodeList.add(node32);
-		nodeList.add(node33);
-		Tree testTree = new Tree(nodeList);
-		int[] bestMove = testTree.alphaBeta(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-		for( int i = 0; i < bestMove.length; i ++) {
-			System.out.print(bestMove[i] + " ");
-		}
-		*/
-		
-		
-		
-		/*
-		RecursiveAI testBot = new RecursiveAI();
-		
-		System.out.println(testBot.toString());
-		
-		Tree tree = new Tree(testBot, 1);
-		
-		int[] bestMove = tree.alphaBeta(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-		System.out.println("-------------SEARCH FINISHED----------------");
-		for( int i = 0; i < bestMove.length; i ++) {
-			System.out.print(bestMove[i] + " " );
-		}
-		System.out.println();
-		System.out.println(tree.timeElapsed());
-		*/
-		
-		
-		/*
 		Long startTime = System.currentTimeMillis();
 		
 		RecursiveAI tester = new RecursiveAI();
@@ -136,7 +47,6 @@ public class COSC322Test extends GamePlayer {
 		System.out.println("TIME TOOK: " + (finishTime - startTime) / 1000);
 		*/
 		
-		///*
 		if (player.getGameGUI() == null) {
 			player.Go();
 		} else {
@@ -147,7 +57,6 @@ public class COSC322Test extends GamePlayer {
 				}
 			});
 		}
-		//*/
 	}
 
 	// Any name and passwd

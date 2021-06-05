@@ -20,7 +20,7 @@ public class RecursiveAI extends Board {
 
 	public RecursiveAI(int[][] board) {
 		super(board);
-		//this.board = board;
+		// this.board = board;
 	}
 
 	public RecursiveAI(RecursiveAI parent) {
@@ -29,9 +29,9 @@ public class RecursiveAI extends Board {
 	}
 
 	public int scoreMove(int[][] board, int player) {
-		
+
 		RecursiveAI testMoveAI = new RecursiveAI(board); // create copy of board
-		
+
 		int opponent = (player == 1) ? 2 : 1;
 		int playerMoves = getMoves(testMoveAI, player).size();
 		int opponentMoves = getMoves(testMoveAI, opponent).size();
@@ -49,7 +49,7 @@ public class RecursiveAI extends Board {
 		// they play invalid moves (will break array)
 		List<List<Integer>> queenPos = new ArrayList<List<Integer>>();
 
-		//System.out.println(currBoard.toString()); // for debugging
+		// System.out.println(currBoard.toString()); // for debugging
 
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
@@ -87,7 +87,7 @@ public class RecursiveAI extends Board {
 
 							if (currBoard.getTile(nextRow, nextCol) == EMPTY) {
 								// System.out.println(currRow + " " + currCol + " " + nextRow + " " + nextCol);
-								
+
 								RecursiveAI testboard = new RecursiveAI(currBoard.getBoard());
 								testboard.moveQueen(currRow, currCol, nextRow, nextCol, player);
 
@@ -101,11 +101,11 @@ public class RecursiveAI extends Board {
 											while (spearCanMove) {
 												spearRow = nextRow + k * spearDist;
 												spearCol = nextCol + r * spearDist;
-												 //System.out.println(currRow + " " + currCol + " " + nextRow + " " +
-												 //nextCol);
-												 //System.out.println(spearRow + " " + spearCol);
+												// System.out.println(currRow + " " + currCol + " " + nextRow + " " +
+												// nextCol);
+												// System.out.println(spearRow + " " + spearCol);
 												if (testboard.getTile(spearRow, spearCol) == EMPTY) {
-													 //System.out.println(testboard.toString());
+													// System.out.println(testboard.toString());
 													int[] move = new int[] { currRow, currCol, nextRow, nextCol,
 															spearRow, spearCol };
 													moves.add(move);
@@ -135,96 +135,96 @@ public class RecursiveAI extends Board {
 
 	public boolean wasValidMove(RecursiveAI currBoard, int opponent, int[] move) {
 		List<int[]> validMoves = currBoard.getMoves(currBoard, opponent);
-		
+
 		int prevRowAdjusted = move[0] - 1;
 		int prevColAdjusted = move[1] - 1;
 		int nextRowAdjusted = move[2] - 1;
 		int nextColAdjusted = move[3] - 1;
 		int spearRowAdjusted = move[4] - 1;
 		int spearColAdjusted = move[5] - 1;
-		int[] adjMove = {prevRowAdjusted, prevColAdjusted, nextRowAdjusted, nextColAdjusted, spearRowAdjusted, spearColAdjusted};
-		for ( int[] moveN : validMoves) {
+		int[] adjMove = { prevRowAdjusted, prevColAdjusted, nextRowAdjusted, nextColAdjusted, spearRowAdjusted,
+				spearColAdjusted };
+		for (int[] moveN : validMoves) {
 			boolean contains = true;
-			for( int i = 0; i < move.length; i ++) {
-				if( moveN[i] != adjMove[i]) {
+			for (int i = 0; i < move.length; i++) {
+				if (moveN[i] != adjMove[i]) {
 					contains = false;
 				}
-				if( i == move.length - 1 && contains == true) {
+				if (i == move.length - 1 && contains == true) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	public int depth = 0;
 	public int desiredDepth = 1;
 	Long startTime;
 	Long currentTime;
 	Long runTime = (long) 27;
-	
+
 	public int[] iterativeDeepeningSearch(int player, int opponent) {
 		int alpha = Integer.MIN_VALUE;
 		int beta = Integer.MAX_VALUE;
 		this.startTime = System.currentTimeMillis();
 		this.currentTime = System.currentTimeMillis();
-		
+
 		boolean toContinue = true;
 		int[] bestMove = new int[7];
 		int[] currentMove = new int[7];
-		while( toContinue == true ) {
+		while (toContinue == true) {
 			currentMove = alphaBetaJared(this, alpha, beta, player, opponent);
-			
+
 			int invalidCounter = 0;
-			for( int i : currentMove) {
-				if( i == Integer.MIN_VALUE ) {
-					invalidCounter ++;
+			for (int i : currentMove) {
+				if (i == Integer.MIN_VALUE) {
+					invalidCounter++;
 				}
 			}
-			if ( invalidCounter > 1) {
+			if (invalidCounter > 1) {
 				toContinue = false;
-			}else {
-				for( int i = 0 ; i < currentMove.length; i ++) {
+			} else {
+				for (int i = 0; i < currentMove.length; i++) {
 					bestMove[i] = currentMove[i];
 				}
 			}
-			
-			
-			//currentTime = System.currentTimeMillis();
-			System.out.println("TOTAL RUNTIME: " + (currentTime - startTime ) / 1000);
-			System.out.println("CURRENT BEST MOVE: ");
-			for( int i = 0; i < bestMove.length; i ++) {
+
+			// currentTime = System.currentTimeMillis();
+			System.out.println("TOTAL RUNTIME: " + (currentTime - startTime) / 1000);
+			System.out.print("CURRENT BEST MOVE: ");
+			for (int i = 0; i < bestMove.length; i++) {
 				System.out.print(bestMove[i] + " ");
 			}
 			System.out.println();
 
-			desiredDepth ++;
+			desiredDepth++;
 
-			if( toContinue == false) 
-				System.out.println("SEARCH ENDED AT DEPTH: " + (desiredDepth - 1) );
-			 else 
-				 System.out.println("NEW DEPTH: " + this.desiredDepth);		
+			if (toContinue == false)
+				System.out.println("SEARCH ENDED AT DEPTH: " + (desiredDepth - 1));
+			else
+				System.out.println("NEW DEPTH: " + this.desiredDepth);
 			System.out.println();
 		}
 		return bestMove;
 	}
-	
+
 	public int[] alphaBetaJared(RecursiveAI boardState, int alpha, int beta, int player, int opponent) {
-				
-		//System.out.println(boardState.toString());
+
+		// System.out.println(boardState.toString());
 		int[] currentMove = new int[7];
-		
+
 		this.currentTime = System.currentTimeMillis();
-		Long timeElapsed = (this.currentTime - this.startTime ) / 1000;
-		
-		if( timeElapsed > this.runTime) {
-			for( int i = 0; i < currentMove.length; i ++) {
+		Long timeElapsed = (this.currentTime - this.startTime) / 1000;
+
+		if (timeElapsed > this.runTime) {
+			for (int i = 0; i < currentMove.length; i++) {
 				currentMove[i] = Integer.MIN_VALUE;
 			}
 			return currentMove;
 		}
-		
-		if ( depth >= desiredDepth ) {
+
+		if (depth >= desiredDepth) {
 			int score = boardState.scoreMove(boardState.getBoard(), player);
 			int[] returnVal = new int[7];
 			returnVal[0] = score;
@@ -234,43 +234,45 @@ public class RecursiveAI extends Board {
 		if (depth % 2 == 0) { // Max turn
 			int[] max = new int[7];
 			max[0] = Integer.MIN_VALUE;
-			depth ++;
+			depth++;
 			List<int[]> playerMoveList = boardState.getMoves(boardState, player);
-			for (int[] childMove : playerMoveList) {
-				
-				RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
-				childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], player);
-				childBoard.throwSpear(childMove[4], childMove[5]);
-				
-				
-				currentMove = alphaBetaJared(childBoard, alpha, beta, player, opponent);
-				
-				if( currentMove[0] == Integer.MIN_VALUE) {
-					for( int i = 0; i < currentMove.length; i ++) {
-						currentMove[i] = Integer.MIN_VALUE;
-					}
-					return currentMove;
-				}
-				
-				// max = Math.max(max.score, currentMove.score);
-				if (currentMove[0] > max[0]) {
-					max[0] = currentMove[0];
-					for (int i = 0; i < 6; i++) {
-						max[i + 1] = childMove[i];
-					}
-				}
+			if (playerMoveList.isEmpty() == false) {
 
-				// alpha = Math.max(max.score, alpha);
-				if (max[0] > alpha) {
-					alpha = max[0];
-				}
+				for (int[] childMove : playerMoveList) {
 
-				// if beta <= alpha can prune branch
-				if (beta <= alpha) {
-					break;
+					RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
+					childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], player);
+					childBoard.throwSpear(childMove[4], childMove[5]);
+
+					currentMove = alphaBetaJared(childBoard, alpha, beta, player, opponent);
+
+					if (currentMove[0] == Integer.MIN_VALUE) {
+						for (int i = 0; i < currentMove.length; i++) {
+							currentMove[i] = Integer.MIN_VALUE;
+						}
+						return currentMove;
+					}
+
+					// max = Math.max(max.score, currentMove.score);
+					if (currentMove[0] > max[0]) {
+						max[0] = currentMove[0];
+						for (int i = 0; i < 6; i++) {
+							max[i + 1] = childMove[i];
+						}
+					}
+
+					// alpha = Math.max(max.score, alpha);
+					if (max[0] > alpha) {
+						alpha = max[0];
+					}
+
+					// if beta <= alpha can prune branch
+					if (beta <= alpha) {
+						break;
+					}
 				}
 			}
-			
+
 			depth--;
 
 			// return max - which is the move array
@@ -281,40 +283,41 @@ public class RecursiveAI extends Board {
 			min[0] = Integer.MAX_VALUE;
 			depth++;
 			List<int[]> opponentMoveList = boardState.getMoves(boardState, opponent);
-			for (int[] childMove : opponentMoveList) {
-				
-				RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
-				childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], opponent);
-				childBoard.throwSpear(childMove[4], childMove[5]);
-				
-				currentMove = alphaBetaJared(childBoard, alpha, beta, player, opponent);
-				
-				if( currentMove[0] == Integer.MIN_VALUE) {
-					for( int i = 0; i < currentMove.length; i ++) {
-						currentMove[i] = Integer.MIN_VALUE;
+			if (opponentMoveList.isEmpty() == false) {
+				for (int[] childMove : opponentMoveList) {
+
+					RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
+					childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], opponent);
+					childBoard.throwSpear(childMove[4], childMove[5]);
+
+					currentMove = alphaBetaJared(childBoard, alpha, beta, player, opponent);
+
+					if (currentMove[0] == Integer.MIN_VALUE) {
+						for (int i = 0; i < currentMove.length; i++) {
+							currentMove[i] = Integer.MIN_VALUE;
+						}
+						return currentMove;
 					}
-					return currentMove;
-				}
-				
-				
-				// min = Math.min( min.score, currentMove.score);
-				if (currentMove[0] < min[0]) {
-					min[0] = currentMove[0];
-					for (int i = 0; i < 6; i++) {
-						min[i + 1] = childMove[i];
+
+					// min = Math.min( min.score, currentMove.score);
+					if (currentMove[0] < min[0]) {
+						min[0] = currentMove[0];
+						for (int i = 0; i < 6; i++) {
+							min[i + 1] = childMove[i];
+						}
 					}
-				}
 
-				// beta = Math.min( min, beta)
-				if (min[0] < beta) {
-					beta = min[0];
-				}
+					// beta = Math.min( min, beta)
+					if (min[0] < beta) {
+						beta = min[0];
+					}
 
-				// if beta <= alpha can prune branch
-				if (beta <= alpha) {
-					break;
-				}
+					// if beta <= alpha can prune branch
+					if (beta <= alpha) {
+						break;
+					}
 
+				}
 			}
 			depth--;
 
