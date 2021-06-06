@@ -414,28 +414,30 @@ public class RecursiveAI extends Board {
 			iter++;
 		}
 
-		int sum1 = 0;
-		int sum2 = 0;
 
+		int score = 0;
+		
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				if (scoreBoard[i][j] != -1) {
-					if (scoreBoard[i][j] != Integer.MAX_VALUE) {
-						sum1 += scoreBoard[i][j];
-					} //else 
-						//sum2 += 10;
-					
-					if (opponentScoreBoard[i][j] != Integer.MAX_VALUE) {
-						sum2 += opponentScoreBoard[i][j];
-					} //else 
-						//sum1 += 10;
-					
+				int tileScore = 0;
+				if (scoreBoard[i][j] == -1) {
+					tileScore = 0;
+				} else if (scoreBoard[i][j] == Integer.MAX_VALUE && opponentScoreBoard[i][j] != Integer.MAX_VALUE) {
+					tileScore = opponentScoreBoard[i][j];
+				} else if (scoreBoard[i][j] != Integer.MAX_VALUE && opponentScoreBoard[i][j] == Integer.MAX_VALUE) {
+					tileScore = -scoreBoard[i][j];
+				} else {
+					tileScore = -scoreBoard[i][j] + opponentScoreBoard[i][j];
 				}
+				// if our tile include mobility from that tile.
+				if( tileScore > 0) {
+					int mobilityScore = scoreMove(board, player);
+					tileScore += mobilityScore;
+				}
+				score += tileScore;
 			}
 		}
-
-		int score = sum2 - sum1;
-
+		
 		return score;
 	}
 
