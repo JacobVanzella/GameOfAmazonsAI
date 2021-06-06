@@ -225,7 +225,7 @@ public class RecursiveAI extends Board {
 		}
 
 		if (depth >= desiredDepth) {
-			int score = boardState.scoreMove(boardState.getBoard(), player);
+			int score = boardState.scoreMoveJared(boardState.getBoard(), player);
 			int[] returnVal = new int[7];
 			returnVal[0] = score;
 			return returnVal;
@@ -325,4 +325,160 @@ public class RecursiveAI extends Board {
 			return min;
 		}
 	}
+
+	public int scoreMoveJared(int[][] board, int player) {
+
+		List<int[]> playerQueenPos = new ArrayList<int[]>();
+		List<int[]> opponentQueenPos = new ArrayList<int[]>();
+
+		int opponent = (player == 1) ? 2 : 1;
+
+		// will be 0 if no move-length set, -1 if there is a piece there (Queen/spear)
+		int[][] scoreBoard = new int[10][10];
+		int[][] opponentScoreBoard = new int[10][10];
+
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 10; col++) {
+				if (board[row][col] == player) {
+					// System.out.println("Row: " + row + " Col: " + col); // for debugging
+					int[] queenN = { row, col };
+					playerQueenPos.add(queenN);
+					scoreBoard[row][col] = -1;
+					opponentScoreBoard[row][col] = -1;
+				} else if (board[row][col] == opponent) {
+					int[] queenN = { row, col };
+					opponentQueenPos.add(queenN);
+					scoreBoard[row][col] = -1;
+					opponentScoreBoard[row][col] = -1;
+				} else if (board[row][col] == SPEAR) {
+					scoreBoard[row][col] = -1;
+					opponentScoreBoard[row][col] = -1;
+				} else {
+					scoreBoard[row][col] = Integer.MAX_VALUE;
+					opponentScoreBoard[row][col] = Integer.MAX_VALUE;
+				}
+			}
+		}
+		List<int[]> moveList = new ArrayList<int[]>();
+
+		for (int[] queenN : playerQueenPos) {
+			moveList.addAll(getTileMoves(board, queenN[0], queenN[1]));
+		}
+		int iter = 1;
+
+		while (moveList.isEmpty() == false) {
+
+			List<int[]> newMoves = new ArrayList<int[]>();
+
+			for (int[] move : moveList) {
+				if (scoreBoard[move[0]][move[1]] != -1) {
+					if (scoreBoard[move[0]][move[1]] > iter) {
+						if (scoreBoard[move[0]][move[1]] == Integer.MAX_VALUE) {
+							newMoves.addAll(getTileMoves(board, move[0], move[1]));
+						}
+						scoreBoard[move[0]][move[1]] = iter;
+					}
+				}
+			}
+			moveList.clear();
+
+			moveList.addAll(newMoves);
+
+			iter++;
+		}
+
+		// Again for the opponent
+		for (int[] queenN : opponentQueenPos) {
+			moveList.addAll(getTileMoves(board, queenN[0], queenN[1]));
+		}
+		iter = 1;
+
+		while (moveList.isEmpty() == false) {
+
+			List<int[]> newMoves = new ArrayList<int[]>();
+
+			for (int[] move : moveList) {
+				if (opponentScoreBoard[move[0]][move[1]] != -1) {
+					if (opponentScoreBoard[move[0]][move[1]] > iter) {
+						if (opponentScoreBoard[move[0]][move[1]] == Integer.MAX_VALUE) {
+							newMoves.addAll(getTileMoves(board, move[0], move[1]));
+						}
+						opponentScoreBoard[move[0]][move[1]] = iter;
+					}
+				}
+			}
+			moveList.clear();
+
+			moveList.addAll(newMoves);
+
+			iter++;
+		}
+
+		int sum1 = 0;
+		int sum2 = 0;
+
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (scoreBoard[i][j] != -1) {
+					if (scoreBoard[i][j] != Integer.MAX_VALUE) {
+						sum1 += scoreBoard[i][j];
+					} //else 
+						//sum2 += 10;
+					
+					if (opponentScoreBoard[i][j] != Integer.MAX_VALUE) {
+						sum2 += opponentScoreBoard[i][j];
+					} //else 
+						//sum1 += 10;
+					
+				}
+			}
+		}
+
+		int score = sum2 - sum1;
+
+		return score;
+	}
+
+	public List<int[]> getTileMoves(int[][] board, int row, int col) {
+		// The nested List has form (prevRow, prevCol, nextRow, nextCol) for available
+		// moves
+		List<int[]> moves = new ArrayList<int[]>(); // will store array of moves in a list
+
+		// System.out.println(currBoard.toString()); // for debugging
+
+		// Find possible moves
+		int currRow = row;
+		int currCol = col;
+		int nextRow = currRow;
+		int nextCol = currCol;
+		int dist = 0;
+		boolean canMove = true;
+
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				canMove = true;
+				dist = 1;
+				try {
+					while (canMove) {
+						nextRow = currRow + i * dist;
+						nextCol = currCol + j * dist;
+
+						if (board[nextRow][nextCol] == EMPTY && !(i == 0 && j == 0)) {
+							// System.out.println(currRow + " " + currCol + " " + nextRow + " " + nextCol);
+
+							int[] move = new int[] { nextRow, nextCol };
+							moves.add(move);
+							dist++;
+						} else {
+							canMove = false;
+						}
+					}
+				} catch (Exception e) {
+					canMove = false;
+				}
+			}
+		}
+		return moves;
+	}
+
 }

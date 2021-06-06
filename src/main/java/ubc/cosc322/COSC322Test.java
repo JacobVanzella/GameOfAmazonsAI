@@ -46,7 +46,13 @@ public class COSC322Test extends GamePlayer {
 		
 		System.out.println("TIME TOOK: " + (finishTime - startTime) / 1000);
 		*/
-		
+		/*
+		RecursiveAI testbot = new RecursiveAI();
+		int score = testbot.scoreMoveJared(testbot.getBoard(), 1);
+		int[] bestmove = testbot.iterativeDeepeningSearch(1, 2);
+		//System.out.println("SCORE: " + score);
+		*/
+		///*
 		if (player.getGameGUI() == null) {
 			player.Go();
 		} else {
@@ -57,6 +63,7 @@ public class COSC322Test extends GamePlayer {
 				}
 			});
 		}
+		//*/
 	}
 
 	// Any name and passwd
