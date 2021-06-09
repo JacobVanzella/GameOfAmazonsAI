@@ -162,7 +162,7 @@ public class RecursiveAI extends Board {
 	public int desiredDepth = 1;
 	Long startTime;
 	Long currentTime;
-	Long runTime = (long) 2;
+	Long runTime = (long) 27;
 
 	public int[] iterativeDeepeningSearch(int player, int opponent) {
 		int alpha = Integer.MIN_VALUE;
@@ -234,10 +234,11 @@ public class RecursiveAI extends Board {
 		if (depth % 2 == 0) { // Max turn
 			int[] max = new int[7];
 			max[0] = Integer.MIN_VALUE;
-			depth++;
 			List<int[]> playerMoveList = boardState.getMoves(boardState, player);
 			if (playerMoveList.isEmpty() == false) {
-
+				
+				depth++;
+				
 				for (int[] childMove : playerMoveList) {
 
 					RecursiveAI childBoard = new RecursiveAI(boardState.getCloneBoard());
@@ -285,9 +286,11 @@ public class RecursiveAI extends Board {
 		} else { // Min turn
 			int[] min = new int[7];
 			min[0] = Integer.MAX_VALUE;
-			depth++;
 			List<int[]> opponentMoveList = boardState.getMoves(boardState, opponent);
 			if (opponentMoveList.isEmpty() == false) {
+				
+				depth++;
+				
 				for (int[] childMove : opponentMoveList) {
 
 					RecursiveAI childBoard = new RecursiveAI(boardState.getCloneBoard());
