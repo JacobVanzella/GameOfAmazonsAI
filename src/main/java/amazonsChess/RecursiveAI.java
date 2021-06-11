@@ -88,7 +88,7 @@ public class RecursiveAI extends Board {
 							if (currBoard.getTile(nextRow, nextCol) == EMPTY) {
 								// System.out.println(currRow + " " + currCol + " " + nextRow + " " + nextCol);
 
-								RecursiveAI testboard = new RecursiveAI(currBoard.getBoard());
+								RecursiveAI testboard = new RecursiveAI(currBoard.getCloneBoard());
 								testboard.moveQueen(currRow, currCol, nextRow, nextCol, player);
 
 								for (int k = -1; k < 2; k++) {
@@ -176,6 +176,8 @@ public class RecursiveAI extends Board {
 		while (toContinue == true) {
 			currentMove = alphaBetaJared(this, alpha, beta, player, opponent);
 
+			System.out.println("CURRENT DEPTH: " + this.desiredDepth);
+			
 			int invalidCounter = 0;
 			for (int i : currentMove) {
 				if (i == Integer.MIN_VALUE) {
@@ -201,9 +203,7 @@ public class RecursiveAI extends Board {
 			desiredDepth++;
 
 			if (toContinue == false)
-				System.out.println("SEARCH ENDED AT DEPTH: " + (desiredDepth - 1));
-			else
-				System.out.println("NEW DEPTH: " + this.desiredDepth);
+				System.out.println("\nSEARCH ENDED AT DEPTH: " + (desiredDepth - 1));
 			System.out.println();
 		}
 		return bestMove;
@@ -225,7 +225,7 @@ public class RecursiveAI extends Board {
 		}
 
 		if (depth >= desiredDepth) {
-			int score = boardState.scoreMoveJared(boardState.getBoard(), player);
+			int score = boardState.scoreMoveJared(boardState.getCloneBoard(), player);
 			int[] returnVal = new int[7];
 			returnVal[0] = score;
 			return returnVal;
@@ -234,13 +234,14 @@ public class RecursiveAI extends Board {
 		if (depth % 2 == 0) { // Max turn
 			int[] max = new int[7];
 			max[0] = Integer.MIN_VALUE;
-			depth++;
 			List<int[]> playerMoveList = boardState.getMoves(boardState, player);
 			if (playerMoveList.isEmpty() == false) {
-
+				
+				depth++;
+				
 				for (int[] childMove : playerMoveList) {
 
-					RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
+					RecursiveAI childBoard = new RecursiveAI(boardState.getCloneBoard());
 					childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], player);
 					childBoard.throwSpear(childMove[4], childMove[5]);
 
@@ -271,6 +272,10 @@ public class RecursiveAI extends Board {
 						break;
 					}
 				}
+			} else {
+				currentMove[0] = - this.depth * 10000;
+				depth --;
+				return currentMove;
 			}
 
 			depth--;
@@ -281,12 +286,14 @@ public class RecursiveAI extends Board {
 		} else { // Min turn
 			int[] min = new int[7];
 			min[0] = Integer.MAX_VALUE;
-			depth++;
 			List<int[]> opponentMoveList = boardState.getMoves(boardState, opponent);
 			if (opponentMoveList.isEmpty() == false) {
+				
+				depth++;
+				
 				for (int[] childMove : opponentMoveList) {
 
-					RecursiveAI childBoard = new RecursiveAI(boardState.getBoard());
+					RecursiveAI childBoard = new RecursiveAI(boardState.getCloneBoard());
 					childBoard.moveQueen(childMove[0], childMove[1], childMove[2], childMove[3], opponent);
 					childBoard.throwSpear(childMove[4], childMove[5]);
 
@@ -318,6 +325,10 @@ public class RecursiveAI extends Board {
 					}
 
 				}
+			} else {
+				currentMove[0] = this.depth * 10000;
+				depth --;
+				return currentMove;
 			}
 			depth--;
 
@@ -325,7 +336,6 @@ public class RecursiveAI extends Board {
 			return min;
 		}
 	}
-
 	public int scoreMoveJared(int[][] board, int player) {
 
 		List<int[]> playerQueenPos = new ArrayList<int[]>();
@@ -482,5 +492,4 @@ public class RecursiveAI extends Board {
 		}
 		return moves;
 	}
-
 }
